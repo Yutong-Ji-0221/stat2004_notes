@@ -1,0 +1,501 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.3)  21 JUL 2023 15:09
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**"/Users/yutongji/Documents/Latex/STAT 2004/stat2004.tex"
+(/Users/yutongji/Documents/Latex/STAT 2004/stat2004.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-02-24> (/usr/local/texlive/2022/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks18
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (/usr/local/texlive/2022/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+) (/usr/local/texlive/2022/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (/usr/local/texlive/2022/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count193
+\Gm@cntv=\count194
+\c@Gm@tempcnt=\count195
+\Gm@bindingoffset=\dimen139
+\Gm@wd@mp=\dimen140
+\Gm@odd@mp=\dimen141
+\Gm@even@mp=\dimen142
+\Gm@layoutwidth=\dimen143
+\Gm@layoutheight=\dimen144
+\Gm@layouthoffset=\dimen145
+\Gm@layoutvoffset=\dimen146
+\Gm@dimlist=\toks20
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/sectsty/sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading styles
+
+
+LaTeX Warning: Command \underbar  has changed.
+               Check if current package is valid.
+
+
+LaTeX Warning: Command \underline  has changed.
+               Check if current package is valid.
+
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2021/10/31 v2.13 LaTeX color extensions (UK)
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1352.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1356.
+Package xcolor Info: Model `RGB' extended on input line 1368.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1370.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2022/02/07 v1.28a mathematical typesetting tools
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count196
+\calc@Bcount=\count197
+\calc@Adimen=\dimen147
+\calc@Bdimen=\dimen148
+\calc@Askip=\skip49
+\calc@Bskip=\skip50
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count198
+\calc@Cskip=\skip51
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2021/10/15 v2.17l AMS math features
+\@mathmargin=\skip52
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks21
+\ex@=\dimen149
+)) (/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen150
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2021/08/26 v2.02 operator names
+)
+\inf@bad=\count199
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count266
+\leftroot@=\count267
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count268
+\DOTSCASE@=\count269
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box50
+\strutbox@=\box51
+\big@size=\dimen151
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count270
+\c@MaxMatrixCols=\count271
+\dotsspace@=\muskip16
+\c@parentequation=\count272
+\dspbrk@lvl=\count273
+\tag@help=\toks22
+\row@=\count274
+\column@=\count275
+\maxfields@=\count276
+\andhelp@=\toks23
+\eqnshift@=\dimen152
+\alignsep@=\dimen153
+\tagshift@=\dimen154
+\tagwidth@=\dimen155
+\totwidth@=\dimen156
+\lineht@=\dimen157
+\@envbody=\toks24
+\multlinegap=\skip53
+\multlinetaggap=\skip54
+\mathdisplay@stack=\toks25
+LaTeX Info: Redefining \[ on input line 2938.
+LaTeX Info: Redefining \] on input line 2939.
+)
+\g_MT_multlinerow_int=\count277
+\l_MT_multwidth_dim=\dimen158
+\origjot=\skip55
+\l_MT_shortvdotswithinadjustabove_dim=\dimen159
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen160
+\l_MT_above_intertext_sep=\dimen161
+\l_MT_below_intertext_sep=\dimen162
+\l_MT_above_shortintertext_sep=\dimen163
+\l_MT_below_shortintertext_sep=\dimen164
+\xmathstrut@box=\box52
+\xmathstrut@dim=\dimen165
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/bbm-macros/bbm.sty
+Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
+LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
+(Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
+(Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count278
+\l__pdf_internal_box=\box53
+) (./stat2004.aux)
+\openout1 = `stat2004.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(56.9055pt, 483.69684pt, 56.90553pt)
+* v-part:(T,H,B)=(56.9055pt, 731.23582pt, 56.90552pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=483.69684pt
+* \textheight=731.23582pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-52.36449pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count279
+\scratchdimen=\dimen166
+\scratchbox=\box54
+\nofMPsegments=\count280
+\nofMParguments=\count281
+\everyMPshowfont=\toks26
+\MPscratchCnt=\count282
+\MPscratchDim=\dimen167
+\MPnumerator=\count283
+\makeMPintoPDFobject=\count284
+\everyMPtoPDFconversion=\toks27
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen168
+\Gin@req@width=\dimen169
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Calculating math sizes for size <14> on input line 31.
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--38
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--46
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--58
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 67--68
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+bbm on input line 72.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+) [1
+
+{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 73--75
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 79--82
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 94--95
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 104--105
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--110
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--110
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--110
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 112--115
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--128
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 144--145
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--175
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 218--219
+
+ []
+
+
+Overfull \hbox (6.10251pt too wide) detected at line 235
+[]
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 247--251
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 293--294
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 295--297
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--305
+
+ []
+
+
+Overfull \hbox (8.27945pt too wide) in paragraph at lines 317--319
+\OT1/cmr/m/n/12 Finally, we take a step back: we sub-sti-tute $[]\OML/cmm/m/it/12 log\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 ^^R\OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 E\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x[]; [] ; x[]\OT1/cmr/m/n/12 ))$ back to $\OML/cmm/m/it/12 T\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x[]; [] ; x[]\OT1/cmr/m/n/12 ) =
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 327--329
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 342--344
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 345--346
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 347--348
+
+ []
+
+
+Overfull \hbox (9.74419pt too wide) detected at line 356
+[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 356--360
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 364--366
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 382--383
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 385--387
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 436--437
+
+ []
+
+[10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 501--502
+
+ []
+
+
+Overfull \hbox (1.17531pt too wide) in paragraph at lines 511--511
+[]\OT1/cmr/m/n/12 Alternatively, if $\OML/cmm/m/it/12 T[]$ \OT1/cmr/m/n/12 is a se-quence of es-ti-ma-tors of a pa-ram-e-ter $\OML/cmm/m/it/12 ^^R$ \OT1/cmr/m/n/12 that hav-ing $[][] \OML/cmm/m/it/12 var\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T[]\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 !
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 517--521
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 523--524
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 525--527
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 571--573
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 582--585
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 587--590
+
+ []
+
+[14] (./stat2004.aux) ) 
+Here is how much of TeX's memory you used:
+ 4334 strings out of 478268
+ 65676 string characters out of 5846348
+ 378965 words of memory out of 5000000
+ 22492 multiletter control sequences out of 15000+600000
+ 484304 words of font info for 87 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 68i,20n,76p,670b,211s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc} </Users/yutongji/Library/texlive/2022/texmf-var/fonts/pk/ljfour/public/bbm/bbm12.600pk></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on stat2004.pdf (14 pages, 276233 bytes).
+PDF statistics:
+ 167 PDF objects out of 1000 (max. 8388607)
+ 104 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

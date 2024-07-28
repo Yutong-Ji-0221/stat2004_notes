@@ -1,0 +1,598 @@
+\documentclass[12pt ]{article}
+\usepackage{inputenc}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{mathtools} 
+\usepackage{bbm}
+
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+ 
+ \sectionfont{\fontsize{14}{15}\selectfont}
+ \subsectionfont{\fontsize{12}{15}\selectfont}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\title{Stat 2004}
+\author{Yutong Ji}
+\date{August  2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Non-parametric estimate of $F_{\theta}$ given by the empirical distribution function
+$F_{n}$}
+\boldmath
+Let {$x_{1}, \ldots, x_{n}$} denote as the observed values which corresponding to the random 
+variable {$X_{1}, \cdots, X_{n}$}. They are $i.i.d.$ with common $f(x; \theta)$ (could be discrete or continuous)
+\unboldmath
+\color{blue}
+we do not know $\theta$ yet, but we are about to estimate $\theta$ by $\hat{\theta}$ \\
+
+\color{black}
+
+Specifically,
+\begin{align*}
+\hat{\theta} = T(x_{1}, \ldots, x_{n})
+\end{align*}\\
+where $T$ is some function and we call $T(x_{1}, \ldots, x_{n})$ an estimate and $T(X_{1}, \ldots, X_{n})$ an estimator. \\
+
+We want the estimation good that $\hat{\theta}$ needs to tend to be close to the true value
+$\theta$:\\
+Mathematically, we want:
+\begin{equation}
+E(|T(X_{1}, \ldots, X_{n}) - \theta|^{\alpha})
+\end{equation}
+to be small, where $\alpha > 0$\\
+\color{brown}
+Aside: when $\alpha = 1$, it is the mean absolute error (MAE) and when $\alpha = 2$, it is the mean squared error (MSE).\\
+\textbf{MAE:} is a measure of errors between paired observation expressing the same phenomenon. It is calculated as the sum of absolute errors (difference between prediction and the true value) divide by the sample size. \\
+\textbf{MSE:} measures the average of the squares of the errors. MSE is a risk function, corresponding to the expected value of the squared error loss. Moreover, MSE is a measure of the quality of an estimator as it is derived from the square of Euclidean distance (the difference) so that it is always a positive value that decreases when the error approaches zero. \\ 
+
+\color{black}
+On the other hand, we would like the 
+\begin{equation}
+P(|T(X_{1}, \ldots, X_{n}) - \theta| < \delta)
+\end{equation}
+to be really large (close to 1) for an arbitrary small $\delta$, where $\delta > 0$.
+
+\subsection{Empirical distribution function}
+In statistic, and an \textit{empirical distribution function} also as known as empirical cumulative distribution function (eCDF) is the distribution function associated with the empirical measure of a sample. Interestingly, eCDF is a step function that jumps up by $\frac{1}{n}$ at each of the $n$ data point (the reason can be found from its definition). \\
+
+
+Let  $(X_{1}, \ldots, X_{n})$ be $i.i.d.$ real random variable with common CDF $F(t)$. Then the eCDF can be defined as:
+\begin{equation}
+\hat{F}_{n}(t) = \frac{\text{the number of element in the sample $\leqslant$ t}}{n} = \frac{1}{n} \sum_{I=1}^{n} \mathbbm{1}_{X_{i} \leqslant t}
+\end{equation} 
+Where $\mathbbm{1}_{X_{I}\leqslant t}$ is the indicator function. \\
+
+Notice that, the indicator is actually a Bernoulli random variable (it only outputs 1 or 0) with parameter p = $F(t)$ ; therefore $n\hat{F}_{n}(t)$ has binomial distribution (sequence if i.i.d. Bernoulli). This implies that $n\hat{F}_{n}(t)$ is an unbiased estimator.
+
+\section{Definition of an unbiased estimator}
+First of all, \textit{what is bias?} The bias of an estimator (or bias function) is the difference between the estimator's expected value and the true value of the parameter being estimated. So, an \textbf{unbiased} estimator is with zero bias.\\
+\color{brown}
+Aside: in practice, biased estimators are frequently used, since an unbiased estimator does not exit without further assumptions, being unbiased is a too strong condition so that it is not useful... \\
+
+\color{black}
+The definition of the bias:
+\begin{equation}
+Bias(\hat{\theta}, \theta) = Bias_{\theta}(\hat{\theta}) = E_{x|\theta}(\hat{\theta} - \theta)
+\end{equation}\\
+Following with the pervious estimator(\textbf{T}):
+\begin{equation*}
+Bias(T) = E((X_{1}, \ldots, X_{n})) - \theta
+\end{equation*}
+
+\section{Method of Moments for estimation of k-dimensional}
+The method of moment is a method of estimation of population parameters.\\
+
+Suppose a sample of size $n$ is drawn, resulting in the values $x_{1}, \ldots, x_{n}$. For $j = 1, \ldots, k$. We have j-th sample moment, an estimate of $\mu_{j}$(true population value):
+\begin{equation}
+\hat{\mu_{j}} = \frac{1}{n} \sum_{i=1}^{n} x_{i}^{j}
+\end{equation}
+
+% possible a few tut question to fill the Lecture 3 (I) in the diary - example of method of moments
+
+\section{Maximum Likelihood estimation of k-dimensional}
+The maximum likelihood (MLE) is a method of estimating the parameters of an assumed probability distribution, given some observed data. This can be achieved by maximising a likelihood function. \\
+
+The goal of maximum likelihood estimation is to determine the parameters for which the observed data have the highest probability.\\
+Suppose that, $X_{1}, \ldots, X_{n}$ are and iid sample from a population with pdf or pmfs $f(x|\theta_{1}, \ldots, \theta_{k}$, so the likelihood function is defined by:\\
+\\
+\\
+\begin{equation}
+L(\theta|x) = L(\theta_{1}, \ldots, \theta_{k} | x_{1}, \ldots, x_{n}) = \prod_{i=1}^{n}f(x_{i}|\theta_{1}, \ldots, \theta_{k})
+\end{equation}
+\color{brown}
+Aside: sometimes we use ';' (joint condition) instead of '$|$' (given condition)\\
+
+\color{blue}
+\noindent
+Example: \\
+\indent
+Let $X_{1}, \ldots, X_{n}$ be iid N($\theta$, 1) and let L($\theta|x$) denote the likelihood function. Then we can substitute $\theta$ as the $\mu$ and 1 as the variance into the likelihood function:
+\begin{equation*}
+\begin{split}
+L(\theta|x) &= \prod_{i=1}^{n} \frac{1}{(2\pi)^{\frac{1}{2}}} e^{-\frac{1}{2}(x_{i} - \theta)^2} \\
+&= \frac{1}{(2\pi)^{\frac{1}{2}}} e^{-\frac{1}{2} \sum_{i=1}^{n} (x_{i} - \theta)^2}
+\end{split}
+\end{equation*}
+Now we try to maximise the equation by letting its first derivative equals to 0. The trick there is noticing that the power of $e$ is meant to be negative (negative sign in the front), except when $\sum_{i=1}^{n} (x_{i}-\theta) = 0$.\\
+
+Therefore the equation (first derivative) $\frac{d}{d\theta}L(\theta|x) = 0$ can be reduce to:
+\begin{equation*}
+\frac{d}{d\theta}L(\theta|x) = 0 \Rightarrow \sum_{i=1}^{n} (x_{i}-\theta) = 0
+\end{equation*}
+In conclusion, it is obviously that the solution would be $\hat{\theta} = \overline{x}$, however further proof for it attains the maximum need to be done...
+
+% adding notes for lecture notes 4
+
+% section 5
+\color{black}
+\section{TBD}
+\subsection{Score Statistic}
+The \textbf{score} (or \textbf{informant}) is the gradient of the log-likelihood function with respect to the parameter vector. Mathematically, 
+\begin{equation}
+s(x_{1}, \ldots, x_{n};\theta) = \frac{d}{d\theta} log(L(\theta))
+\end{equation} \\
+
+One interesting result is related to this score statistic is that under certain regularity conditions the expected value (mean) of the score statistic is zero. To see this, we rewrite the likelihood function as a pdf. Then:
+\begin{equation*}
+\begin{split}
+E(s|\theta) &= \int_{\chi} f(x;\theta) \frac{d}{d\theta} log(L(\theta;x)) dx\\
+&=  \int_{\chi} f(x;\theta) \frac{1}{f(x;\theta)} \frac{d}{d\theta} f(x;\theta) dx, \color{blue}\text{chain rule} \color{black}\\
+&=  \int_{\chi} \frac{d}{d\theta} f(x;\theta) dx
+\end{split}
+\end{equation*}
+Now, we need to assume that the regularity condition allows the interchange of derivative and integral (Leibniz rule) to move further.
+\begin{equation*}
+\frac{d}{d\theta} \int_{\chi} f(x;\theta) dx = \frac{d}{d\theta} 1 = 0
+\end{equation*}
+
+\subsection{Fisher Information}
+Fisher information is a way of measuring the amount of information that an observable random variable $X$ carries about an unknown parameter $\theta$ of a distribution that models $X$. Specifically, it is the variance of the score statistic (introduced above), or the expected value of the observed information.\\
+Fisher information is defined to be the variance of the score, (under certain regularity conditions) mathematically:
+\begin{equation}
+\mathcal{F}(\theta) = E((\frac{d}{d\theta} log f(x;\theta))^2 | \theta)
+\end{equation} \\
+
+\noindent Also, the fisher information can be expressed as 
+\begin{equation}
+\mathcal{F}(\theta) = E(I(\theta)), \color{blue} \text{   where } I(\theta) = - \frac{d^2}{d\theta^2} log L(\theta) \color{black}
+\end{equation}
+$I(\theta)$ is known as the negative of the Hessian of the log likelihood function. However, if we pass $\hat{\theta}$ (maximum likelihood estimate of $\theta$) into the function $I$, it is the observed information.
+
+\color{brown}
+Aside: the observed information (or observed fisher information) is the negative of the second derivative (the Hessian matrix) of the 'log-likelihood'. It is a \textbf{sample-based} version of the Fisher information.
+\color{black}\\
+
+\textit{Proof:} \\
+We are about to prove that the fisher information is equal to the negative Hessian ($I(\theta)$)\\
+In use of the result that:
+\begin{enumerate}
+\item $\frac{d}{d\theta} L(\theta) =  (\frac{d}{d\theta} logL(\theta))L(\theta)$
+\item $\int \cdots \int \frac{d}{d\theta} [ \{ \frac{d}{d\theta} logL(\theta)\} L(\theta)] dx_{1} \ldots dx_{n} = 0$
+\end{enumerate}
+\color{blue}
+Before we get into the proof, we first verify these result: \\
+For the \textbf{result 1}, we briefly touch it in section 5.1. By chain rule:
+\begin{align*}
+\frac{d}{d\theta} log(L(\theta)) &=  \frac{1}{L(\theta)} \frac{d}{d\theta}L(\theta) \text{,      by using chain rule} \\
+\end{align*}
+Then we multiply both side with $L(\theta)$ we got the result 1. \\
+For the \textbf{result 2}, we substitute the result 1 into the score statistic under regularity condition (expectation is zero). Details also are shown in section 5.1.
+\color{black}
+Following from the result 2, we have:
+\begin{align*}
+\int \cdots \int \frac{d}{d\theta} [ \{ \frac{d}{d\theta} logL(\theta)\} L(\theta)] dx_{1} \ldots dx_{n} &= 0 \\
+\int \cdots \int ([\frac{d^2}{d\theta^2}logL(\theta)] L(\theta) + [\frac{d}{d\theta}logL(\theta)]^2 L(\theta)) dx_{1} \ldots dx_{n}  &= 0 \\
+\textit{using the result 1 to transfer it back:} E([\frac{d^2}{d\theta^2}logL(\theta)] + [\frac{d}{d\theta}logL(\theta)]^2) &= 0\\
+\textit{by the linearity of expectation:}
+\underbrace{E([\frac{d^2}{d\theta^2}logL(\theta)])}_{\text{the negative Hessian}}+ \underbrace{E([\frac{d}{d\theta}logL(\theta)]^2)}_{\text{Fisher information}} &=0 \\
+\textit{with the definition of $I(\theta)$ in (9): }-E(I(\theta)) + \mathcal{F}(\theta) &= 0
+\end{align*}
+Finally we have proven that $\mathcal{F}(\theta) = E(I(\theta))$
+
+% section 6
+\section{The regularity conditions}
+In the parameter estimation, the likelihood function is usually assumed to obey certain conditions - regularity condition.
+\begin{itemize}
+\item $f(x;\theta)$ have common support that the set {$x:f(x;\theta) > 0$} does not depend on $\theta$
+\item sample size is an open interval defined in $\mathbb{R}$(the partial derivative of $f(x; \theta)$ almost exist everywhere)
+\item the first derivative exists for all $\theta \in \Omega$
+\item the fisher information is greater than zero for all $\theta \in \Omega$
+\item the integral and derivative may be interchangeable for $L(\theta; x_{1}, \ldots, x_{n})$ or \\
+ $T(x_{1}, \ldots, x_{n}) L(\theta;x_{1}, \ldots, x_{n})$ (illustrated the reason in 5.1)
+\end{itemize}
+The above conditions are sufficient, but not necessary. So, the model does not meet these regularity conditions may or may not have a maximum likelihood estimator.
+
+%section 7
+\section{Derivation of the Cramér-Rao lower bound}
+The Cramer-Rao bound (\textbf{CRB}) express a lower bound on the variance of unbiased estimators of a fixed and unknown parameter. The variance of any such estimator is at least as high as the inverse of the \textit{Fisher information}. In other words, it expresses an upper bound on the precision (the inverse of variance) of unbiased estimators - \textit{the precision of any such estimator is at most the Fisher information}.\\
+
+Suppose that $T=t(X)$ is an unbiased estimator with expectation $g(\theta)$ which $E(T) = g(\theta)$. We are about to prove that for all $\theta$, we have:
+\begin{equation}
+var(t(X)) \geq \frac{(g'(\theta))^2}{\mathcal{F}(\theta)}
+\end{equation}
+
+Let $X$ be a random variable with pdf $f(x;\theta)$ so $T=t(X)$ is a statistic used as an estimator for $g(\theta)$. Moreover, we define $S$ as the score (see section 5.1). \\
+If we consider the covariance of $T$ and $S$:
+\begin{align*}
+cov(S, T) &= E(ST) - E(S)E(T) \\
+ &= E(ST) \textit{,    since under regularity condition $E(S)=0$ (see section 5.1):} \\
+&= E(T * [\frac{1}{f(X;\theta)} \frac{d}{d\theta} f(X; \theta)])  \textit{,    following the definition of the score statistic} \\
+&= \int t(x) [\frac{1}{f(x;\theta)} \frac{d}{d\theta} f(x;\theta)] f(x;\theta) dx \\
+&= \frac{d}{d\theta}[\int t(x)f(x;\theta) dx] \textit{,    the regularity allows the interchange of derivative and integral} \\
+&= \frac{d}{d\theta} E(T) \\
+ &= g'(\theta) \textit{,    where $E(T) = g(\theta)$ is given}
+\end{align*}
+The Cauchy-Schwarz inequality shows that: $\sqrt{var(T)var(S)} \geq |cov(T,S)|$ \\
+Therefore, $var(T) \geq \frac{(g'(\theta))^2 }{var(S)}$ \\
+Finally, since the variance of score statistic is the Fisher information so that we have the result $(10)$.
+
+%section 8
+\section{Regular Exponential Family}
+In this section, we provides two form of how to define the exponential family.
+\subsection{statistic interface book}
+In the book (Statistic Interface) we define exponential family as \textit{ a family of pdfs or pmfs that can be expressed as:}
+\begin{equation}
+f(x|\theta) = h(x)c(\theta)exp(\sum_{i=1}^{k} w_{i}(\theta)t_{i}(x))
+\end{equation}
+Where, \\
+$h(x) \geq 0$ and  $t_{1}(x), \ldots, t_{k}(x)$ are functions in range of all real value. Notice that they required the observations instead of unknown parameters, so they also called scalar function.\\
+$c(\theta) \geq 0$ and $w_{1}(\theta), \ldots, w_{k}(\theta)$ are functions in range of all real value.\\
+
+To verify a family of pdfs or pmfs belong to exponential family, we must identify those functions. We will go through an example of normal exponential family. \\
+
+Example (1 observation normal) : let $f(x|\mu,\sigma^2)$ be the $N(\mu, \sigma^2)$, where $\theta = (\mu, \sigma^2)$. Then, we have:
+\begin{align*}
+f(x|\mu,\sigma^2) &= \frac{1}{\sqrt{2\pi}\sigma} exp(-\frac{(x-\mu)^2}{2\sigma^2}) \\
+&= \frac{1}{\sqrt{2\pi}\sigma} exp(-\frac{\mu^2}{2\sigma^2}) exp(-\frac{x^2}{2\sigma^2} + \frac{\mu x}{\sigma^2})
+\end{align*}
+Define:
+\begin{itemize}
+\item $h(x) = 1$
+\item $c(\theta) = c(\mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma} exp(-\frac{\mu^2}{2\sigma^2})$
+\item $w_{1}(\mu, \sigma) = \frac{1}{\sigma^2}$
+\item $w_{2}(\mu, \sigma) = \frac{\mu}{\sigma^2}$
+\item $t_{1}(x) = \frac{-x^2}{2}$
+\item $t_{2}(x) = x$
+\end{itemize}
+Thus,
+\begin{equation*}
+f(x|\mu,\sigma^2) = h(x) c(\mu, \sigma) exp(w_{1}(\mu, \sigma) t_{1}(x) + w_{2}(\mu, \sigma)  t_{2}(x))
+\end{equation*}
+Where it is the exponential form with $k=2$ with defined in $(11)$.
+
+\subsection{Lecture notes: n-dimensional case}
+In the case of $x_{1}, \ldots, x_{n}$ observations, the likelihood function $L(\theta) = f(x_{1}, \ldots, x_{n}; \theta)$ has the following form, if it belongs to the exponential family:
+\begin{equation}
+f(x_{1}, \ldots, x_{n}; \theta) = b(x_{1}, \ldots, x_{n})\frac{exp(c(\theta)^T T(x_{1}, \ldots, x_{n}))}{\alpha(\theta)}
+\end{equation}
+Where,
+\begin{itemize}
+\item $T(x_{1}, \ldots, x_{n})$ is a q-dimensional sufficient statistic
+\item $b(x_{1}, \ldots, x_{n})$ and $\alpha(\theta)$ are non-negative scalar function
+\item $c(\theta)$ is a $q \times 1$ vector function of d-dimensional parameter vector $\theta$
+\end{itemize}
+Note that if $q=d$ and the Jacobian of $c(\theta)$ is full rank, then it is said to be from a regular exponential family. The coefficient $c(\theta)$ is call the natural or canonical parameter vector.
+
+% example of normal belongs to exponential family under multiple cases
+
+\subsection{One important takeaway in regular exponential family: ML Estimates of Parameters}
+It can be shown that the maximum likelihood estimate $\hat{\theta}$ of $\theta$ is the value of $\theta$ that satisfies the equation:
+\begin{equation}
+E_{\hat{\theta}}(T(X_{1}, \ldots, X_{n})) = T(x_{1}, \ldots, x_{n})
+\end{equation} \\
+
+\textbf{Proof:} \\
+Suppose that the joint distribution of the data $X_{1}, \ldots, X_{n}$ belongs to the regular exponential family (in form of $(12)$). \\
+
+Firstly, the log likelihood function of $L(\theta)$ is:
+\begin{align*}
+logL(\theta) &= log b(x_{1}, \ldots, x_{n}) + log(\frac{exp(c(\theta)^T T(x_{1}, \ldots, x_{n}))}{\alpha(\theta)}) \\
+&= logb(x_{1}, \ldots, x_{n}) + log(exp(c(\theta)^T T(x_{1}, \ldots, x_{n}))) - log(\alpha(\theta)) \\
+&= logb(x_{1}, \ldots, x_{n}) +c(\theta)^T T(x_{1}, \ldots, x_{n}) - log(\alpha(\theta))
+\end{align*}
+Next, on differentiation of the log likelihood function with respect to $\theta$:\\
+\begin{align*}
+\frac{d}{d\theta} logL(\theta) &= \frac{d}{d\theta} [(logb(x_{1}, \ldots, x_{n}) +c(\theta)^T T(x_{1}, \ldots, x_{n}) - log(\alpha(\theta)))] \\
+&= T(x_{1}, \ldots, x_{n}) - \frac{d}{d\theta} log(\alpha(\theta))
+\end{align*}
+Notice that, under regular condition that the expectation of the score statistic is zero, where $E(\frac{d}{d\theta} logL(\theta)) = 0$. We take the expectation of both side:
+\begin{equation*}
+E(\frac{d}{d\theta} logL(\theta)) = E(T(x_{1}, \ldots, x_{n}) - \frac{d}{d\theta} log(\alpha(\theta))) = 0\\
+\end{equation*}
+That is: $T(x_{1}, \ldots, x_{n}) - \frac{d}{d\theta} log(\alpha(\theta)) = 0 \Rightarrow T(x_{1}, \ldots, x_{n}) =  \frac{d}{d\theta} log(\alpha(\theta))$ \\
+Now, we take the expectation again we get:
+\begin{equation*}
+E(T(x_{1}, \ldots, x_{n})) = \frac{d}{d\theta} log(\alpha(\theta)), \textit{since $\alpha(\theta))$ is a scalar}
+\end{equation*}
+Finally, we take a step back: we substitute $\frac{d}{d\theta} log(\alpha(\theta) = E(T(x_{1}, \ldots, x_{n}))$ back to $T(x_{1}, \ldots, x_{n}) =  \frac{d}{d\theta} log(\alpha(\theta)$:
+\begin{equation*}
+[E(T(X_{1}, \ldots, X_{n}))]_{\theta = \hat{\theta}} = T(x_{1}, \ldots, x_{n}))
+\end{equation*}
+
+\section{Minimum Variance Bound Estimators}
+In section 7, we have seen that the condition needed for an unbiased estimator $T$ attains the Cramer-Rao lower bound. Interestingly, if there is equality in the Cauchy-Schwarz inequality applied to $\frac{d}{d\theta} logL(\theta)$ (Score statistic) and $T$. The equality holds if and only if there is a linear function of the other:
+\begin{equation}
+\frac{d}{d\theta} logL(\theta) = k(\theta)T + l(\theta)
+\end{equation}
+Then, T is the minimum variance bound (MVB). \textit{We will explore more to see what $k(\theta)$ and $l(\theta)$ are}.\\
+
+When we take the expectation of both side.
+\begin{equation*}
+\begin{split}
+E(\frac{d}{d\theta} logL(\theta)) &= E(k(\theta)T + l(\theta)) \\
+0 &= k(\theta) E(T) + l(\theta) \\
+0 &= k(\theta) g(\theta) + l(\theta), \textit{perviously, it is known that $E(T) = g(\theta)$}
+\end{split}
+\end{equation*}
+This leads to $l(\theta) = - k(\theta) g(\theta)$, so we substitute it into $(14)$:
+\begin{align}
+\frac{d}{d\theta} logL(\theta) &= k(\theta)T - k(\theta) g(\theta) \\
+&= k(\theta) (T - g(\theta))
+\end{align}
+Now we have a neat version of the required linear function. It is saying that the score statistic must factor into $(T - g(\theta))$ times a function of the unknown parameter $\theta$ only and not depend on the observation.  \\
+
+On the other hand, in order to know whether an estimator $T$ attains the MVB is to calculate its variance and see if it is equal to (needs to ask): \\
+
+By using the result from $(16)$, if we square both sides and take their expectations, we can find that: \\
+\begin{equation*}
+\begin{split}
+\textit{square both side: }\\
+[\frac{d}{d\theta} logL(\theta)]^2 &= [k(\theta) (T - g(\theta))]^2 = k(\theta)^2 * [T^2 - 2Tg(\theta) + g(\theta)^2] \\
+\textit{take expectations of both side: }\\
+E([\frac{d}{d\theta} logL(\theta)]^2) &= E(k(\theta)^2 * [T^2 - 2Tg(\theta) + g(\theta)^2]) \\
+&= k(\theta)^2 E([T^2 - 2Tg(\theta) + g(\theta)^2]), \textit{   the linearity of the expectation} \\
+\end{split}
+\end{equation*}
+\color{blue}
+Now before we take any step further, recall that $E(T) = g(\theta)$ (seen section 7)
+\color{black} \\
+\begin{align} 
+E([\frac{d}{d\theta} logL(\theta)]^2) &= k(\theta)^2 (E(T^2) - E(T)^2) \\
+&= k(\theta)^2 var(T)\\
+\mathcal{F}(\theta) &= \frac{k(\theta)^2 g'(\theta)^2}{\mathcal{F}(\theta)}, \textit{   Since, $var(t(X)) \geq \frac{(g'(\theta))^2}{\mathcal{F}(\theta)}$}
+\end{align}
+We get intuition from $(19)$ that it explains why if there is an equality in the Cauchy-Schwarz, the $(14)$ holds and we have the minimum variance bound.\\
+
+Following from $(19)$, it shows that for now, $\mathcal{F}(\theta) = |k(\theta)g'(\theta)|$ so continuing from $(18)$,
+\begin{equation*}
+var(T) = \frac{\mathcal{F}(\theta)}{k(\theta)^2} = \frac{k(\theta)g'(\theta)}{k(\theta)^2} = \frac{g'(\theta)}{k(\theta)}
+\end{equation*}
+In this case, since $g(\theta)$ ($g(\theta) = E(T)$) is just a number so, $g'(\theta) = 1$. Recall that: \\
+$\mathcal{F}(\theta) = |k(\theta)g'(\theta)| \Rightarrow \mathcal{F}(\theta) = k(\theta)$, so the derivation is finished with:
+\begin{equation}
+var(T) = \frac{1}{\mathcal{F}(\theta)}
+\end{equation}
+\color{brown}
+Aside: this is also called the Scalar unbiased case of Cramér–Rao bound.
+\color{black}
+
+\section{Sample Variance}
+\subsection{Pre-known sample variance (biased)}
+In pervious sections, we know that we can derive sample variance from observations, especially the method of moment tells us that we can get the variance if you manipulate the second moment. That is: \\
+\begin{equation*}
+\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^{n} (x_{i} - \bar{x})^2
+\end{equation*}
+Where, we have $x_{1}, \ldots, x_{n}$ as the observed data, and $\bar{x}$ is the first moment (sample mean): $\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_{i}$.\\
+
+\subsection{Unbiased sample variance}
+We still can obtain unbiased sample variance, if we correct the bias yields. What we do here is taking the expectation of the biased sample variance, then there is a special relation between them.
+\begin{equation*}
+E(\hat{\sigma}^2) = E[\frac{1}{n} \sum_{i=1}^{n} (x_{i} - \bar{x})^2]
+\end{equation*}
+\color{blue}
+Before we actually go to the derivation, let's state some handy results which can help us to understand:
+\begin{itemize}
+\item true mean is $\mu$ and true variance is $\sigma^2$
+\item $var(x_{i}) = \sigma^2$, $var(\bar{x}) = \frac{\sigma^2}{n}$, $E(x_{i}) = E(\bar{x}) = \mu$
+\item $E(x^2) = var(x) + (E(x))^2$
+\item \begin{align*}
+\sum_{i=1}^{n} (x_{i} - \bar{x})^2 &= \sum_{i=1}^{n} (x_{i}^2 - 2x_{i}\bar{x} + \bar{x}^2) \\
+&= \sum_{i=1}^{n} x_{i}^2 - 2\bar{x}\sum_{i=1}^{n} x_{i} + \sum_{i=1}^{n} \bar{x}^2 \\
+&= \sum_{i=1}^{n} x_{i}^2 - 2n\bar{x}^2 + n\bar{x}^2 \\
+&= \sum_{i=1}^{n} x_{i}^2 - n\bar{x}^2
+\end{align*}
+\end{itemize}
+\color{black}
+Continuing from $E[\frac{1}{n} \sum_{i=1}^{n} (x_{i} - \bar{x})^2]$:
+\begin{align*}
+E[\frac{1}{n} \sum_{i=1}^{n} (x_{i} - \bar{x})^2] &= \frac{1}{n} E(\sum_{i=1}^{n} x_{i}^2 - n\bar{x}^2) \\
+&= \frac{1}{n} (\sum_{i=1}^{n}E(x_{i}^2) - nE(\bar{x}^2)) \\
+&= \frac{1}{n} (\sum_{i=1}^{n}[var(x_{i}) + E(x_{i})^2]- n [var(\bar{x}) + E(\bar{x})^2]) \\
+&= \frac{1}{n} (n (\sigma^2 + \mu^2) - n(\frac{\sigma^2}{n} + \mu^2)) \\
+&= \frac{1}{n} (n-1) \sigma^2 \\
+&= \frac{n-1}{n} \sigma^2
+\end{align*}
+The amazing result shows that the sample variance is expected to be the $\frac{n-1}{n}$ of true (population) variance, so that we can donate $\mathcal{S}^2$ as the unbiased sample variance that is:
+\begin{equation}
+\mathcal{S}^2 = \frac{n}{n-1} \hat{\sigma}^2
+\end{equation}
+
+Moreover, since we can have multiple observations, sample variance itself can be treated as a random variable. In case of each observation is independent with each other then $\mathcal{S}^2$ follows a chi-squared distribution:
+\begin{equation}
+\frac{n-1}{\sigma^2} \mathcal{S}^2 \sim \chi_{n-1}^{2}
+\end{equation}
+With that, we can investigate some basic information of $\mathcal{S}^2 $.\\
+Under \textbf{normal distribution} circumstances:
+\begin{equation}
+E(\mathcal{S}^2) = E(\frac{\sigma^2}{n-1} \chi_{n-1}^{2}) = E(\frac{\sigma^2}{n-1} (n-1)) = \sigma^2
+\end{equation}
+Recall that: $var(aX) = a^2 var(X)$
+\begin{equation}
+var(\mathcal{S}^2) = var(\frac{\sigma^2}{n-1} \chi_{n-1}^{2}) = \frac{\sigma^4}{(n-1)^2} var(\chi_{n-1}^{2}) = \frac{\sigma^4}{n-1}
+\end{equation} 
+
+\section{Sufficient Statistic}
+A statistic is said to be sufficient if there is no other statistic that can be calculated from the same sample that carries any additional information.\\
+
+we will continue to use $T$ statistic here as conversion. So mathematically, a statistic $t = T(x)$ is sufficient for unknown parameter $\theta$ if the conditional probability distribution of the data $X$, given the statistic does not dependent on the unknown parameter.
+
+\subsection{Fisher-Neyman factorisation theorem}
+Fisher's factorisation theorem provides a characterisation of sufficient statistic that we can use the equation to determine if a statistic is sufficient.\\
+A statistic $T$ is said to be sufficient for unknown parameter ($\theta$) if and only if the joint pdf can be factored as:
+\begin{equation}
+f(x_{1}, \ldots, x_{n}; \theta) = h_{1}(T(x_{1}, \ldots, x_{n}); \theta)h_{2}(x_{1}, \ldots, x_{n}), \forall \theta \in \Omega
+\end{equation}
+Where we can see here $h_{1}$ and $h_{2}$ are non-negative functions and $h_{2}$ only depends on the observed data.
+
+\subsection{Minimal sufficiency}
+A sufficient statistic is said to be \textit{minimal sufficient} if it can be represent as a function of any other sufficient statistic. Specifically, if $T(X)$ is minimal statistic if and only if:
+\begin{itemize}
+\item $T(X)$ is sufficient
+\item suppose that $S(X)$ is another sufficient statistic, then there exists a function $f$ that $T(X) = f(S(X))$ (it is a function of every other statistic)
+\end{itemize}
+
+\subsection{Completeness}
+Completeness is a property of a statistic in relation to a model for a set of observed data. Essentially, it ensures that the distributions corresponding to different values of the parameters are distinct.\\
+A sufficient statistic $T$ is complete if:
+\begin{equation}
+E_{\theta}(w(T)) = 0, \forall \theta \in \Omega
+\end{equation}
+Where $w$ is all possible measurable function.\\
+\textbf{Takeaway:} a complete sufficient statistic is always the minimal sufficient statistic.
+
+\section{Rao-Blackwell Theorem}
+\subsection{Theorem 1}
+Suppose that $U(X_{1}, \ldots, X_{n})$ is an unbiased estimator of the unknown parameter $\theta$ and on top of that $T(X_{1}, \ldots, X_{n})$ is a sufficient statistic. If there is a function $W$ that:
+\begin{equation}
+W(T(X_{1}, \ldots, X_{n})) = E[U(X_{1}, \ldots, X_{n}) | T(X_{1}, \ldots, X_{n})]
+\end{equation}
+Then we can conclude:
+\begin{enumerate}
+\item The function $W(T(X_{1}, \ldots, X_{n}))$ is a function of T that it does not depend on unknown parameter $\theta$
+\item $W(T(X_{1}, \ldots, X_{n}))$ is also an unbiased estimator of $\theta \Rightarrow E[W(T(X_{1}, \ldots, X_{n}))] = \theta$
+\item $var(W(T)) < var(U)$, except when $U = W(T)$
+\end{enumerate}
+Proof:
+\begin{enumerate}
+\item Recall that $T$ is sufficient statistic of $\theta$ so that $T$ does not depend on unknown parameters $\theta$ (definition of sufficient statistic). Therefore, any function with given $T$ does not depend on $\theta$ as well. Hence, $W$ does not depend on $\theta$
+\item Taking the expectation of $(27)$ and by using of the tower property:
+\begin{align*}
+E[W(T(X_{1}, \ldots, X_{n}))] &= E[E[U(X_{1}, \ldots, X_{n}) | T(X_{1}, \ldots, X_{n})]] \\
+&= E(U(X_{1}, \ldots, X_{n})) \\
+&= \theta \text{,   since U is an unbiased estimator}
+\end{align*}
+\item Taking the variance of $U$:
+\begin{align*}
+var(U) &= var(E(U|T)) + E(var(U|T))\\
+&= var(W) + E(var(U|T)) \\
+&> var(W(T))
+\end{align*}
+Since variance is generally greater than zero
+\end{enumerate}
+The main takeaway from this theorem is that if we have an unbiased estimator and a sufficient statistic $T$ of unknown parameters $\theta$, we can generate another unbiased estimator with a smaller variance. \textit{So, if we have any kind of estimator, for instance, $g(\theta)$, we just compute the expectation of $g(\theta)$ conditionally given on a sufficient statistic $T(x)$, then we have a better estimator and it never worse, since the variance of the estimator has been reduced.} \textbf{Note: the precondition is that the original estimator is not a function of $T$ alone.}
+
+\subsection{Theorem 2: Lehmann-Scheffé}
+Suppose that $T$ now is a \textbf{complete statistic} and $U(T)$ is an unbiased estimator of $\theta$ which having finite variance. Then $U(T)$  is an uniformly minimum-variance unbiased estimator (UMVUE) of $\theta$ and it is unique. 
+%probably adding prove for that?
+
+\section{Asymptotic Evaluations}
+\subsection{Consistency}
+The property of consistency is a fundamental one which requiring that the estimator converges to the \textbf{true value} as simple size becomes infinite. Here we concerns a sequence of estimators rather than a single one. \\
+
+Suppose that we observe $X_{1}, X_{2}, \ldots, X_{n}$ with respect to a distribution $f(x;\theta)$. Then we construct a sequence of estimators $T_{n} = T_{n}(X_{1}, X_{2}, \ldots, X_{n})$:
+
+$T_{n}$ is said to be consistency if it converges to the true value that for every $\varepsilon > 0$:
+\begin{equation}
+\lim_{n\rightarrow 0}Pr(|T_{n} - \theta| \geq \varepsilon) \rightarrow 0
+\end{equation}
+
+
+Alternatively, if $T_{n}$ is a sequence of estimators of a parameter $\theta$ that having $\lim_{n\rightarrow 0} var(T_{n}) \rightarrow 0$ and $\lim_{n\rightarrow 0} bias(T_{n}) \rightarrow 0$, then the sequence of estimates $T_{n}$ is consistent.\begin{equation}\end{equation}
+
+Proof:
+We are about to the alternative statement above directly by using the result of Chebychev's Inequality which states that:
+\begin{equation*}
+P(|T_{n} - \theta | \geq \varepsilon) \leq \frac{E((T_{n} - \theta)^2)}{\varepsilon^2}
+\end{equation*}
+From $(28)$, we know that $P(|T_{n} - \theta | \geq \varepsilon)$ has to converge to 0 to be able to be a consistent estimator, so the only way to achieve that is making $\frac{E((T_{n} - \theta)^2)}{\varepsilon^2} = 0$, which is equivalence as making $E((T_{n} - \theta)^2)$ converges to 0.\\
+And from $(1)$, we know that $E((T_{n} - \theta)^2)$ is MSE that $E((T_{n} - \theta)^2) = var(T_{n}) + [bias(T_{n})]^2$ \\
+Therefore, we complete the proof that the variance of the bias of $T_{n}$ need to be 0 to make the sequence of $T_{n}$ to be consistent. \\
+
+\color{blue}
+Now we can see a couple of examples of consistent estimators to make our understanding concrete.\\
+
+Lemma:\\
+$s^2 = \frac{1}{n-1} \sum_{j=1}^{n} (x_{j} - \bar{x})^2$ and $\hat{\sigma}^2 = \frac{1}{n} \sum_{j=1}^{n} (x_{j} - \bar{x})^2$ are consistent estimators of $\sigma^2$. \\
+
+Demonstration: \\
+We can take advantages of the speciality of $\sum_{j=1}^{n} (x_{j} - \bar{x})^2$. Recall that $\frac{\sum_{j=1}^{n} (x_{j} - \bar{x})^2}{\sigma^2} \sim \chi_{n-1}^{2}$. So,
+\begin{equation*}
+E[\frac{\sum_{j=1}^{n} (x_{j} - \bar{x})^2}{\sigma^2}] = n - 1
+\end{equation*}
+And
+\begin{equation*}
+var[\frac{\sum_{j=1}^{n} (x_{j} - \bar{x})^2}{\sigma^2}] = \sigma^{-4} 2(n-1)
+\end{equation*}
+Therefore,
+\begin{equation*}
+E[\sum_{j=1}^{n} (x_{j} - \bar{x})^2] = (n - 1)\sigma^2
+\end{equation*}
+\begin{equation*}
+var[\sum_{j=1}^{n} (x_{j} - \bar{x})^2] = 2(n - 1)\sigma^4
+\end{equation*}
+Hence, \\
+For $s^2$:
+\begin{equation*}
+E(s^2) = E[\frac{1}{n-1}\sum_{j=1}^{n} (x_{j} - \bar{x})^2] = \frac{1}{n-1} (n - 1)\sigma^2 = \sigma^2
+\end{equation*}
+\begin{equation*}
+var(s^2) = var[\frac{1}{n-1}\sum_{j=1}^{n} (x_{j} - \bar{x})^2] = (\frac{1}{n-1})^2 2(n - 1)\sigma^4 = 0 \text{,  as n $\rightarrow 0$}
+\end{equation*}
+$E(s^2) = \sigma^2$ shows $s^2$ is unbiased and $\lim_{n\rightarrow 0}var(s^2) = 0$. So by using the alternative statement $(29)$ we can determine that $s^2$ is consistent estimator. \\
+For $\hat{\sigma}^2$:
+\begin{align*}
+E(\hat{\sigma}^2) &= E[\frac{1}{n}\sum_{j=1}^{n} (x_{j} - \bar{x})^2] \\
+&= \frac{1}{n} (n - 1)\sigma^2 \\
+&= \sigma^2 - \frac{\sigma^2}{n} \\
+&= \sigma^2 \text{,  as $n\rightarrow 0$}
+\end{align*}
+\begin{align*}
+var(\hat{\sigma}^2) &= E[\frac{1}{n}\sum_{j=1}^{n} (x_{j} - \bar{x})^2] \\
+&= (\frac{1}{n})^2 2(n - 1)\sigma^4\\
+&= \frac{2(n-1)\sigma^4}{n^2} \\
+&= 0 \text{,  as $n\rightarrow 0$}
+\end{align*}
+So, similarly with $s^2$, but $\hat{\sigma}$ is unbiased only when the sample size is approaching infinite (large sample).
+\color{black}
+
+\section{Asymptotic efficiency}
+\subsection{Efficiency}
+Before we go into the asymptotic efficiency, let's have a look at efficiency in general. \\
+In statistic, the efficiency is a measure of quality of an estimator - \textit{how good is our estimator, which we normally prefer the one has less variance}.\\
+
+Mathematically, the efficiency of an unbiased estimator is defined as:
+\begin{equation}
+e(T) = \frac{1/\mathcal{F}(\theta)}{var(T)}
+\end{equation}
+Where, $\mathcal{F}(\theta)$ is the Fisher information.\\
+Recall that the section 7 about Cramér-Rao lower bound: $var(t(X)) \geq \frac{(g'(\theta))^2}{\mathcal{F}(\theta)}$, 
+\begin{equation*}
+e(T) = \frac{1/ \mathcal{F}(\theta)}{var(T)} \leq \frac{1/ \mathcal{F}(\theta)}{\frac{(g'(\theta))^2}{\mathcal{F}(\theta)}} \leq \frac{1}{(g'(\theta))^2} 
+\end{equation*}
+since, $var(T)$ could be larger as it only states the possible lower bound.\\ 
+As $(g'(\theta))^2$ is positive, we can conclude that $e(T) \leq 1$. \\
+
+\color{brown}
+Aside: in general, the variance (spread of the an estimator) is a measure of the estimator efficiency and performance. More formally, the mean square error (MSE) is the proper measure of the quality of the estimator (refer to section 1). For instance, if $T_{1}$ performs better than $T_{2}$, then $MSE(T_{1}) < MSE(T_{2})$. However, in the unbiased estimator condition, it would depend only on the variance only.\\
+Proof: \\ 
+The MSE can be expressed as $MSE(T) = var(T) + [E(T) - \theta]^2$. Since T is unbiased, it makes $E(T) - \theta = 0$. So under unbiased estimators scenarios, $MSE(T) = var(T)$. \\
+
+\color{black}
+If $e(T)$ attains to 1, we would call the estimator $T$ an efficient estimator. More interestingly, an efficient estimator is just the minimum variance unbiased estimator (MVUE, section 9).
+
+\subsection{asymptotically efficiency}
+Some estimator can attain efficiency asymptotically (when the sample turns to infinite), so that called asymptotically efficient estimators. \\
+One important theorem is: let $X_{1}, X_{2}, \ldots$ be idd $f(x; \theta)$
+
+\end{document}

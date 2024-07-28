@@ -1,0 +1,1254 @@
+\documentclass[12pt ]{article}
+\usepackage{inputenc}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{mathtools} 
+\usepackage{bbm}
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{amsmath}
+
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+ 
+ \sectionfont{\fontsize{14}{15}\selectfont}
+ \subsectionfont{\fontsize{12}{15}\selectfont}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\RomanNumeralCaps}[1] {\MakeUppercase{\romannumeral #1}}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+
+\title{Stat 2004 Second Half}
+\author{Yutong Ji}
+\date{Sep  2022}
+
+\begin{document}
+
+\maketitle
+
+%\section{Intro}
+%In the pervious notes, we had a look at point estimation. Now, what if we do not want a point, we want to know if the true value for the unknown parameter would fall into an interval?
+\section{Pivotal quantity}
+Pivotal quantity, pivot variable, or pivot is a theoretical (not computable) transformation of a random variable (collected data) such that its distribution no longer depended on any unknown parameter. \\
+
+Specifically, let $X = (X_{1}, X_{2}, \ldots, X_{n})$ be a random sample from a distribution that depends on the unknown parameter $\theta$ (could also be a vector). Then $g$ is called a pivotal quantity if $g(X, \theta)$ has the same distribution for any given $\theta$ - \textit{which implies that it does not depend on the unknown parameter} \\
+\color{brown}
+Aside: Pivotal quantity are commonly used for \textbf{normalisation} and are fundamental to construct test statistic (an example of Student's t-statistic has shown below)\\
+\color{black}
+One of the simplest pivot we have seen before is the \textit{z-score} ($z=\frac{x-\mu}{\sigma}$), in the n-sample case:
+\begin{equation*}
+z=\frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim N(0,1)
+\end{equation*}
+Where, it has mean 0 and variance 1 - no longer depend on the unknown parameter.
+
+\section{Confidence Interval}
+The confidence interval is a range for an unknown parameter. It is constructed with three components, sample mean (by point estimation), critical value, standard error. \\
+Formula:
+\begin{equation*}
+CI = \bar{x} \pm z\frac{s}{\sqrt{n}}
+\end{equation*}
+Margin of error: $z\frac{s}{\sqrt{n}}$ expresses the amount of random sampling error in the result - closeness (how close to the population parameter) \\ 
+Confident: the level of confidence, for instance 95\% of confidence is, $95\%CI = \bar{x} \pm 1.96\frac{s}{\sqrt{n}}$ and we can say that we are 95\% confident that the interval 
+$\bar{x} \pm 1.96\frac{s}{\sqrt{n}}$ contains the true population mean ($\mu$) \\
+
+Interval estimation are more informative than a single point estimation (first half notes), since a CI gives us a sense of the uncertainty of an estimate along with a level of confidence. Moreover, CIs can be considered as a range or set of parameters values that are consistent with the data which CI is the inverse/complement hypothesis testings.
+
+\subsection{CI for $\mu$ when $\sigma^2$ is unknown}
+Suppose that $X = (X_{1}, X_{2}, \ldots, X_{n}) \sim^{iid} N(\mu, \sigma^2)$, in the pervious notes we see that:
+\begin{enumerate}
+\item $\frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \sim N(0, 1)$
+\item $\frac{(n-1)s^2}{\sigma^2} \sim \chi^2_{n-1} \Rightarrow \frac{s^2}{\sigma^2} \sim \frac{\chi^2_{n-1}}{n-1}$
+\item $\bar{x}$ and $s^2$ are independent
+\end{enumerate}
+\color{blue}
+Before we go further we need to verify those 3 derivations, the first two has been proven in the first half notes, so let's have a look at the third one: \\
+We are about to use \textbf{Basu's theorem}: completed minimal sufficient statistic is independent of any ancillary statistic (pivotal quantity). We know that from the first half notes that, the sample mean is a complete minimal sufficient static and the unbiased sample variance can be written as $\hat{\sigma}^2 = \frac{\sum X_{i} - \bar{X}}{n-1}$ (moments and the biased-corrected representation) which does not depend on the unknown parameter, so that we can conclude that they are independence.\\
+
+\color{black}
+Now we can make a transformation:
+\begin{equation*}
+T = \frac{\bar{x} - \mu}{s / \sqrt{n}} = \frac{(\bar{x} - \mu) / (\sigma / \sqrt{n})}{(s / \sqrt{n}) / (\sigma / \sqrt{n})} \sim \frac{N(0,1)}{\sqrt{\chi^2_{n-1} / (n-1)}} \equiv T_{n-1}
+\end{equation*}
+Where, n-1 is the degree of freedom \\
+Note that this T transformation is a theoretical transformation known as Student-T distribution (symmetric and bell-shape curve ), since to complete this transformation we need to know the true population $\sigma$. Moreover, the result of this transformation no longer depend on the unknown parameters so that T is a pivot.\\
+
+Furthermore, when we know that pivot, it is time to construct the CI. \\
+To construct a (1 - $\alpha$)\% CI:
+\begin{align*}
+(1 - \alpha)100\% &= P(-t^{1- \alpha / 2}_{n-1} \leq T_{n-1} \leq t^{1- \alpha / 2}_{n-1} \\
+&= P(\bar{X} + \frac{t^{1- \alpha / 2}_{n-1} * s}{\sqrt{n}} \geq \mu \geq \bar{X} - \frac{t^{1- \alpha / 2}_{n-1} * s}{\sqrt{n}})
+\end{align*}
+In R: we can use: \textbf{qt}(($1-\alpha$), df) to calculate the result.
+
+\subsection{CI for population variance}
+Suppose that $X = (X_{1}, X_{2}, \ldots, X_{n}) \sim^{iid} N(\mu, \sigma^2)$ \\
+We already know that: $\frac{(n-1)s^2}{\sigma^2} \sim \chi^2_{n-1}$ and $\frac{(n-1)s^2}{\sigma^2}$ is a pivotal quantity so that we could start to construct CI directly.\\
+To construct a (1 - $\alpha$)\% CI:
+\begin{align*}
+(1 - \alpha)100\% &= P(\chi^{2^{\alpha / 2}}_{n-1} \leq \chi^2_{n-1} \leq \chi^{2^{1 - \alpha / 2}}_{n-1}) \\
+&= P(\frac{(n-1)s^2}{\chi^{2^{\alpha / 2}}_{n-1}} \geq \sigma^2 \geq \frac{(n-1)s^2}{\chi^{2^{1 - \alpha / 2}}_{n-1}})
+\end{align*}
+Note that chi-square distribution is \textbf{not} symmetric and is always positive, so that it is the reason why we do from $\alpha / 2$ to $1 - \alpha / 2$. \\
+Similar in R, we can do: \textbf{qchisq}($\frac{\alpha}{2}$ or $1 - \frac{\alpha}{2}$, df)
+
+\subsection{CI for population proportion}
+Suppose that we want to investigate some traits (left hand, colour blind, ...) in a population. The people either have this trait or do not have this trait which implies each individual follows Bernoulli distribution with success probability $p$. Then a random sample size of $n$ in the population would follow a Binomial distribution (Bin(n, p)). If we want to construct a confidence interval, we need to compute the pivot, but in general, pivot does not exist in discrete random variables. \\
+
+However, we could construct \textbf{approximate/asymptotic pivots}. Suppose that x is the number of people in the sample that have the particular trait, where $X \sim Bin(n, p)$
+\begin{enumerate}
+\item the proportion is $\hat{p} = \frac{x}{n} \Rightarrow E(\hat{p}) = p$, due to the proportion converge to the success probability when sample is large. Mathematically, $E(\hat{p}) = E(\frac{x}{n}) = \frac{E(x)}{n} = \frac{np}{n} = p$
+\item standard error of the proportion is  $\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$, due to definition of the standard error is $\frac{\text{sample standard deviation}}{\sqrt{\text{sample size}}}$
+\item by Central Limit Theorem, when sample size is large, $\hat{p}$ has an asymptotic normal distribution
+\end{enumerate}
+Then, we standardise the proportion $\hat{p}$: $\frac{\hat{p} - p}{\sqrt{\hat{p}(1-\hat{p}) / n}} \sim N(0, 1)$, so that $\frac{\hat{p} - p}{\sqrt{\hat{p}(1-\hat{p}) / n}}$ is a asymptotic pivot.\\
+\color{brown}
+Aside: although we can construct a asymptotic pivot, when p is close to 0 or 1, it becomes unreliable.\\
+\color{black}
+Since this result is based on the CLT which required sample size to be sufficiently large. A general rule is that the sample size must contain at least 10 successes and at least 10 failures.
+
+\subsection{CI procedure}
+Suppose that $X_{1}, X_{2}, \ldots, X_{n}$ be the random data coming from some population that depends on parameter $\theta$, then the interval we constructed $(T_{1}(X), T_{2}(X))$ is an exact $(1-\alpha) 100 \%$ CI for $\theta$, if $(T_{1}(X)$ and $T_{2}(X))$ are functions of the data alone such that these statistic capture the true $\theta$:
+\begin{equation*}
+P(T_{1}(X) \leq \theta \leq T_{2}(X)) = 1 - \alpha  \mbox{, for all } \theta
+\end{equation*}
+If we let $P(T_{1}(X) \leq \theta \leq T_{2}(X)) \geq 1 - \alpha  \mbox{, for all } \theta$, this is called a constructive CI with confidence level at least $(1 - \alpha)100\%$
+
+\subsection{CI for two samples}
+% adding
+will be added when i have more time
+
+\section{Hypothesis Test}
+Hypothesis testing is about making decisions about certain hypotheses on the basis of the observed data. There is no unique decision rule, however some rules are better than others.
+\subsection{null \& alternative hypothesis}
+The null \& alternative hypothesis are two competing claims about a population parameters (some numeric values on a population). The null hypothesis is denoted as $H_{0}$, generally contains the statement that is tested (so-called 'boring' hypothesis); whereas the alternative hypothesis is denoted as $H_{1}$ which generally contains the statement we hope or suspect is true (so-called 'interesting' hypothesis). \color{brown} Aside: mathematically, two hypothesis are symmetric, however there are many reasons to treat them as asymmetrically. \\
+
+\color{black}
+We mainly focus on a single point hypothesis, where $H_{0}$ is usually: $\theta = \theta_{0}$ and $H_{1}$ can be \textit{one-side}: $\theta > \theta_{0}$, $\theta < \theta_{0}$ or \textit{two-side}: $\theta \neq \theta_{0}$.
+\subsection{Test Statistic}
+The decision between $H_{0}$ and $H_{1}$ needs to be based on the observations $(X_{1}, X_{2}, \ldots, X_{n})$ so that an appropriate summary statistic (only depends on data alone). So we write it as $T = T(X_{1}, X_{2}, \ldots, X_{n})$ for our test statistic. Any function only depends on the observed data could be considered as a candidate for test statistic, however some principles can be useful to determine which one is great:
+\subsubsection{Method of moments}
+Suggesting we use $\bar{X}$ for testing population mean $\mu$ and use $s^2$ for testing population variance $\sigma^2$.
+\subsubsection{Maximum Likelihood Estimation}
+Alternatively, if we have a model for the population which falls into a distribution then we can use MLE as a starting point: \\
+
+For example: 
+\begin{enumerate}
+\item $\bar{X}$ for testing $\mu$ if $X \sim N(\mu, \sigma^2)$ or $X \sim Poi(\mu)$ and so on
+\item $\frac{1}{\bar{X}}$ for testing population rate $\lambda$, if $X \sim Exp(\lambda)$
+\item $max(X_{1}, X_{2}, \ldots, X_{n})$ for testing population upper bound $\theta$, if $X \sim U(0, \theta)$
+\end{enumerate}
+\color{blue}
+The proof of result 2 is provided below: \\
+Suppose $(X_{1}, X_{2}, \ldots, X_{n})$ are idd random variables fall into exponential distribution. \\
+The likelihood function is:
+\begin{equation*}
+L(\lambda; x) = f_{\lambda}(x) = \prod_{i= 1}^{n} \lambda e^{-\lambda x_{i}} = \lambda^n e^{-\lambda \sum_{i=1}^{n}x_{i}}
+\end{equation*}
+Following MLE approach, we take the first derivative of the log-likelihood function:
+\begin{align*}
+\frac{d}{d\lambda} log(L(\lambda;x)) &= \frac{d}{d\lambda} log (\lambda^n e^{-\lambda \sum_{i=1}^{n}x_{I}}) \\
+&= \frac{d}{d\lambda} nlog(\lambda) - \lambda \sum_{i=1}^{n}x_{i} \\
+&= \frac{n}{\lambda} - \sum_{i=1}^{n}x_{i}
+\end{align*}
+then assign it to 0 to solve the function,
+\begin{align*}
+\frac{n}{\lambda} - \sum_{i=1}^{n}x_{i} &= 0 \\
+\frac{n}{\lambda} &= \sum_{i=1}^{n}x_{i} \\
+\frac{1}{\lambda} &= \frac{1}{n}\sum_{i=1}^{n}x_{i} \\
+\lambda &= \frac{1}{\frac{1}{n}\sum_{i=1}^{n}x_{i}}
+\end{align*}
+\color{black}
+\subsection{Critical regions}
+After specifying the parameters we are interested in and computing the test statistic, we are about to make a decision to reject or retain $H_{0}$ on the outcome of $T$. So we say that reject $H_{0}$ in favour of $H_{1}$, if $T$ falls in the critical region.\\
+The critical regions $C$ could be one side or two side:\\
+\textit{one-side:}
+\begin{itemize}
+\item right-one-side: $C = [c, \infty]$, if $T$ falls in this region, we could say we reject $H_{0}$($\theta = \theta_{0}$) in favour of $H_{1}$($\theta > \theta_{0}$) - overly large
+\item left-one-side: $C = [-\infty, c]$, if $T$ falls in this region, we could say we reject $H_{0}$($\theta = \theta_{0}$) in favour of $H_{1}$($\theta < \theta_{0}$) - overly small
+\end{itemize}
+\noindent
+\textit{two-side:} \\
+$C = [-\infty, c_{1}] \cup [c_{2}, \infty]$, if $T$ falls in this region, we could say we reject $H_{0}$($\theta = \theta_{0}$) in favour of $H_{1}$($\theta \neq \theta_{0}$) - overly large or overly small
+
+\subsection{Type \RomanNumeralCaps{1} \& Type \RomanNumeralCaps{2} Errors}
+Whenever we made a decision based on some rules, we run into two type of errors:
+\begin{itemize}
+\item accidentally reject $H_{0}$ when $H_{0}$ is in fact true - type \RomanNumeralCaps{1} error
+\item accidentally retain $H_{0}$ when $H_{0}$ is in fact false - type \RomanNumeralCaps{2} error
+\end{itemize}
+
+\subsubsection{Type \RomanNumeralCaps{1} - significance level}
+The type \RomanNumeralCaps{1} error is defined as:
+\begin{equation*}
+\alpha = P(T(X) \in C | H_{0})
+\end{equation*}
+Where it is interpreted as the probability of reject $H_{0}$ given that $H_{0}$ is true. $\alpha$ is also known as the significance level of a test. \\ 
+In order to compute $\alpha$, we need to know the distribution of $T(X)$ given $H_{0}$. We usually assume an explicit model for the data or apply the limit theorems (CLT, Fisher-tippett) for an approximate distribution. \\
+
+A general procedure: \\
+Suppose that we collect data with sample size n, where standard deviation is $\sigma$, and the decision rule states that rejecting $H_{0}$ (true mean is $\mu$) in favour of $H_{1}$, if sample mean ($\bar{x}$ as the test statistic) is $\geq$ c. Then,
+\begin{align*}
+\alpha &= P_{H_{0}}(\bar{x} \geq c) \\
+&= P_{H_{0}}\underbrace{(\frac{\bar{x} - \mu}{SE} \geq \frac{c - \mu}{SE})}_{standardise} \text{,   } SE = \frac{\sigma}{\sqrt{n}} \\
+& \approx^{CLT}  P_{H_{0}}(N(0,1) \geq \frac{c - \mu}{\sigma / \sqrt{n}})
+\end{align*}
+We could use R to calculate the result by $1 - pnorm(\frac{c - \mu}{\sigma / \sqrt{n}})$ \\
+Notice that only c (the specified critical region in the decision rule) is a variable and the rest are fixed values, which proves that if tight the critical region (by simply increase c), the type \RomanNumeralCaps{1} got reduced.\\
+
+Alternatively, sometimes we want to control type \RomanNumeralCaps{1} error, for example, we want $\alpha$ to be 5\% \color{brown} Aside:( 5\% is used in the general science, 10\% is used in social science, and 1\% normally is used in medicine) \color{black}we can reverse the computation showed above. \\
+
+Example: obtain the c with given that we want to achieve 5\% significance level \\
+With knowing that 5\% has a critical value 1.645
+\begin{align*}
+0.05 &= P_{H_{0}}(N(0,1) \geq 1.645) \\
+& \approx^{CLT}  P_{H_{0}} (\frac{\bar{x} - \mu}{SE} \geq 1.645) \\
+& = P_{H_{0}} (\bar{x} \geq 1.645 \times \frac{\sigma}{\sqrt{n}})
+\end{align*}
+Then, by letting $c = 1.645 \times \frac{\sigma}{\sqrt{n}}$ we can achieve $\alpha = 0.05$
+\subsubsection{Type \RomanNumeralCaps{2} error - power}
+The type \RomanNumeralCaps{2} error is defined as:
+\begin{equation*}
+\beta = P(T(X) \notin C | H_{1}) = 1 - P(T(X) \in C | H_{1})
+\end{equation*}
+And the power is define as:
+\begin{equation*}
+power = 1 - \beta = P(T(X) \in C | H_{1})
+\end{equation*}
+Where power is interpreted as the probability of rejecting $H_{0}$ when it is in fact false so that we often want high power. \\
+If the specified $H_{1}$ tights the critical region (increasing c), the power got increase.
+
+\subsubsection{compromise two types of errors}
+There is no such a decision rule can simultaneously minimise type \RomanNumeralCaps{1} error and type \RomanNumeralCaps{2} error, however Negman-Pearson proposed a compromise between type \RomanNumeralCaps{1} error and power.
+Aiming:
+\begin{enumerate} 
+\item restricts and control type \RomanNumeralCaps{1} error at suitably small (medicine/engineering has $\alpha = 0.01$, biological science has $\alpha = 0.05$)
+\item maximise the power under the alternative
+\end{enumerate}
+
+\subsection{Likelihood ratio tests}
+Suppose that $H_{0} : \theta \in \theta_{0}$ and $H_{1} : \theta \in \theta_{1}$, then the likelihood ratio test statistic is defined as:
+\begin{equation*}
+\frac{L(\theta_{0} | X)}{L(\theta_{1} | X)}
+\end{equation*}
+If the ratio is small, the data would have more likely observed under $H_{1}$. Hence it leads to the likelihood ratio test (LRT): reject $H_{0}$ in favour of $H_{1}$ if $\frac{L(\theta_{0} | X)}{L(\theta_{1} | X)} \leq c$, where c is some critical value.
+\subsubsection{Negman Pearson Lemma}
+One very important lemma derived from LRT is: \\
+Suppose that LRT (rejects $H_{0}$ in favour of $H_{1}$ if $\frac{L(\theta_{0} | X)}{L(\theta_{1} | X)} \leq c$) that has level $\alpha$, then any other tests that also have level $\alpha$ has power less than or equal to the LRT. Hence in their lemma, they state that LRT is the most powerful test for level $\alpha$
+\subsection{LRT for normal mean under variance is known}
+Suppose $X = X_{1}, X_{2}, \ldots, X_{n} \sim^{iid} N(\mu, \sigma^2)$ and we are interested in testing two point hypothesis about $\mu$:
+\begin{itemize}
+\item $H_{0}: \mu = \mu_{0}$
+\item $H_{1}: \mu = \mu_{1}$
+\end{itemize}
+In general, the likelihood function for $N(\mu. \sigma^2)$'s mean is: 
+\begin{equation*}
+L(\mu|X) = (\frac{1}{\sqrt{2 \pi \sigma^2}})^n e^{- \frac{1}{2 \sigma^2} \sum^{n}_{i=1} (x_{i}-\mu)^2}
+\end{equation*}
+Hence the LRT statistic is:
+\begin{align*}
+\frac{L(\mu_{0} | X)}{L(\mu_{1} | X)} &= \frac{(\frac{1}{\sqrt{2 \pi \sigma^2}})^n e^{- \frac{1}{2 \sigma^2} \sum^{n}_{i=1} (x_{i}-\mu_{0})^2}}{(\frac{1}{\sqrt{2 \pi \sigma^2}})^n e^{- \frac{1}{2 \sigma^2} \sum^{n}_{i=1} (x_{i}-\mu_{1})^2}} \\
+&= \frac{e^{- \frac{1}{2 \sigma^2} \sum^{n}_{i=1} (x_{i}-\mu_{0})^2}}{e^{- \frac{1}{2 \sigma^2} \sum^{n}_{i=1} (x_{i}-\mu_{1})^2}} \\
+&= e^{\frac{1}{2 \sigma^2} (\sum^{n}_{i=1} (x_{i}-\mu_{1})^2 - \sum^{n}_{i=1} (x_{i}-\mu_{0})^2)}
+\end{align*}
+Since the exponential's range is always positive, smaller the value of the statistic is equivalence as smaller the values of its power, where smaller the value of $\sum^{n}_{i=1} (x_{i}-\mu_{1})^2 - \sum^{n}_{i=1} (x_{i}-\mu_{0})^2$. \\
+
+To slove it:
+\begin{align*}
+\sum^{n}_{i=1} (x_{i}-\mu_{1})^2 - \sum^{n}_{i=1} (x_{i}-\mu_{0})^2 &= \sum^{n}_{i=1} (x_{i}-\bar{x}+\bar{x}-\mu_{1})^2 - \sum^{n}_{i=1} (x_{i}-\bar{x}+\bar{x}-\mu_{0})^2 \\
+&= \sum^{n}_{i=1} [(x_{i}-\bar{x})^2 +2(x_{i}-\bar{x})(\bar{x}-\mu_{1}) + (\bar{x}-\mu_{1})^2] \\
+&- \sum^{n}_{i=1} [(x_{i}-\bar{x})^2 + 2(x_{i}-\bar{x})(\bar{x}-\mu_{0})+(\bar{x}-\mu_{0})^2] 
+\end{align*}
+Since $\sum^{n}_{i=1} (x_{i}-\bar{x})^2$ will cancel out and $\sum^{n}_{i=1} x_{i}-n\bar{x} = 0$, due to the definition of the sample mean. Hence, the evaluation ends as:
+\begin{equation*}
+\sum^{n}_{i=1} (x_{i}-\mu_{1})^2 - \sum^{n}_{i=1} (x_{i}-\mu_{0})^2 = n (\bar{x}-\mu_{1})^2 - n(\bar{x}-\mu_{0})^2 = n[(\bar{x}-\mu_{1})^2 - (\bar{x}-\mu_{0})^2]
+\end{equation*}
+Notice that, now the LRT only depends on sample mean, so we can say that:
+\begin{itemize}
+\item if  $\mu_{1} > \mu_{0}$, $\frac{L(\theta_{0} | X)}{L(\theta_{1} | X)} \leq c$ if and only if $\bar{X} \geq d$, for some d.
+\item if  $\mu_{1} < \mu_{0}$, $\frac{L(\theta_{0} | X)}{L(\theta_{1} | X)} \leq c$ if and only if $\bar{X} \leq d$, for some d.
+\item if $\mu_{1} \neq \mu_{0}$, $\frac{L(\theta_{0} | X)}{L(\theta_{1} | X)} \leq c$ if and only if $\bar{X} \neq d$, for some d.
+\end{itemize}
+How to obtain d? - by restricting the type \RomanNumeralCaps{1} error: \\
+if $\bar{X} \geq d$:
+\begin{align*}
+\alpha &= P_{H_{0}} (\bar{X} \geq d)  \\
+&\approx^{CLT} P_{H_{0}} (\frac{\bar{X} - \mu_{0}}{SE} \geq z^{1-\alpha}) \\
+&= P_{H_{0}} (\bar{X} \geq  \underbrace{\mu_{0} + z^{1-\alpha} \times \frac{\sigma}{\sqrt{n}}}_{d})
+\end{align*}
+if $\bar{X} \leq d$:
+\begin{equation*}
+P_{H_{0}} (\bar{X} \leq  \underbrace{\mu_{0} - z^{1-\alpha} \times \frac{\sigma}{\sqrt{n}}}_{d})
+\end{equation*}
+if $\bar{X} \neq d$:
+\begin{equation*}
+P_{H_{0}} (\bar{X} \leq  \underbrace{\mu_{0} - z^{\frac{1-\alpha}{2}} \times \frac{\sigma}{\sqrt{n}}}_{d}) \text{   or   } P_{H_{0}} (\bar{X} \geq  \underbrace{\mu_{0} + z^{\frac{1-\alpha}{2}} \times \frac{\sigma}{\sqrt{n}}}_{d})
+\end{equation*}
+
+\subsection{What if the population variance is unknown?}
+We can estimate it using the sample variance ($s^2$):
+\begin{equation*}
+\frac{\bar{x} - \mu_{0}}{s/\sqrt{n}} \sim t_{n-1}            \text{             ,under $H_{0}: \mu = \mu_{0}$}
+\end{equation*}
+So we use t-cutoffs instead of z-cutoffs: \\
+if $\bar{X} \geq d$:
+\begin{equation*}
+P_{H_{0}} (\bar{X} \geq  \underbrace{\mu_{0} + t^{1-\alpha}_{n-1} \times \frac{s}{\sqrt{n}}}_{d})
+\end{equation*}
+if $\bar{X} \leq d$:
+\begin{equation*}
+P_{H_{0}} (\bar{X} \leq  \underbrace{\mu_{0} - t^{1-\alpha}_{n-1} \times \frac{s}{\sqrt{n}}}_{d})
+\end{equation*}
+if $\bar{X} \neq d$:
+\begin{equation*}
+P_{H_{0}} (\bar{X} \leq  \underbrace{\mu_{0} - t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}}}_{d}) \text{   or   } P_{H_{0}} (\bar{X} \geq  \underbrace{\mu_{0} + t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}}}_{d})
+\end{equation*}
+\subsection{Example of LRT on Poisson distribution}
+Suppose that $X = (X_{1}, X_{2}, \ldots, X_{n}) \sim^{iid} Poisson(\lambda)$. $H_{0}: \lambda = \lambda_{0}$ \& $H_{1}: \lambda = \lambda_{1} > \lambda_{0}$: \\
+First of all we need the log-likelihood function:
+\begin{equation*}
+L(\lambda;X) = \prod_{i=1}^{n} e^{-\lambda} \frac{\lambda^{x_{i}}}{x_{i}!} = e^{-n\lambda} \frac{\lambda^{\sum_{i=1}^{n} x_{i}}}{\prod_{i=1}^{n}x_{i}!}
+\end{equation*}
+Then we can apply them into LRT definition:
+\begin{equation*}
+\frac{L(\lambda_{0} | X)}{L(\lambda_{0} | X)} = \frac{e^{-n\lambda_{0}} \frac{\lambda_{0}^{\sum_{i=1}^{n} x_{i}}}{\prod_{i=1}^{n}x_{i}!}}{e^{-n\lambda_{1}} \frac{\lambda_{1}^{\sum_{i=1}^{n} x_{i}}}{\prod_{i=1}^{n}x_{i}!}} = e^{-n(\lambda_{1}-\lambda_{0})} (\underbrace{\frac{\lambda_{0}}{\lambda_{1}}}_{ < 1})^{\sum_{i=1}^{n} x_{i}}
+\end{equation*}
+Since $\lambda_{1} > \lambda_{0}$, the LRT becomes smaller when $\sum_{i=1}^{n} x_{i}$ is larger so that the LR test for testing between $H_{0}$ and $H_{1}$ can be interpreted as:
+\begin{equation*}
+\sum_{i=1}^{n} x_{i} \geq d
+\end{equation*}
+Where d is the summation of all the sample data. Note that, the final decision rule does not dependent on the value of $\lambda$, it is in fact the uniformly most powerful test for testing null \& alternative hypothesis. \\
+
+\noindent
+Now we just need to decide what $d$ is: \\
+Given that the summation of each iid poisson random variable, we can say that: $X = (X_{1}, X_{2}, \ldots, X_{n}) \sim Poisson(n\lambda)$. Hence the type \RomanNumeralCaps{1} error can be construct as:
+\begin{equation*}
+\alpha \geq P_{H_{0}}(X_{1}, X_{2}, \ldots, X_{n} \geq d) = P_{H_{0}}(Poisson(n\lambda) \geq d)
+\end{equation*}
+So that d must be the upper $\alpha$ quantile.\\
+In R, we could do "$ qpois (1-\alpha, n\lambda)$"\\
+
+Alternatively, we could use t-test to achieve an approximately $\alpha$ compared with LRT, however if the datasets are truly from Poisson distribution, the LRT has more power than t-test. On the other hand, if the data is not from Poisson distribution, the type \RomanNumeralCaps{1} error from LRT may not be close to $\alpha$ and power would be much lower as well. Where t-test would always give the approximately correct $\alpha$ and asymmetrically power. \\
+
+\color{blue}
+Back up verification for sum of n idd Poison($\lambda$) is Poision(n$\lambda$): \\
+Suppose $X~Poisson(\lambda_{1})$ and $Y~Poisson(\lambda_{2})$ and let $Z=X+Y$: \\
+\begin{align*}
+P(Z=n) = P(X+Y=n) &= \underbrace{\sum_{k=0}^{n}P(X=k)P(Y=n-k)}_{\text{convolution}} \\
+&= \sum_{k=0}^{n} e^{-\lambda_{1}} \frac{\lambda_{1}^{k}}{k!} e^{-\lambda_{2}} \frac{\lambda_{2}^{n-k}}{(n-k)!} \\
+&= e^{-(\lambda_{1} + \lambda_{2})} \sum_{k=0}^{n} \frac{\lambda_{1}^{k} \lambda_{2}^{n-k}}{k!(n-k)!} \\
+&= \frac{e^{-(\lambda_{1} + \lambda_{2})}}{n!} \sum_{k=0}^{n} \frac{n!}{k!(n-k)!} \lambda_{1}^{k} \lambda_{2}^{n-k} \\
+&= \frac{e^{-(\lambda_{1} + \lambda_{2})}}{n!} (\lambda_{1} + \lambda_{2})^n
+\end{align*}
+The last step above uses the binomial theorem where: $(a + b)^n = \sum_{k=0}^{n} \left(\begin{array}{c} n \\ k \end{array}\right) a^k b^{n-k}$
+\color{black}
+
+\subsection{P-values}
+For everything that discussed before, we have not yet collected any numerical data. This is done on purpose since we have to make sure that:
+\begin{itemize}
+\item identifying population parameters of interest
+\item formulating null \& alternative hypothesis test about parameters
+\item choosing the test statistic $T(X)$ and critical region c
+\item setting type  \RomanNumeralCaps{1} error by choosing critical value d
+\item accessing the power of the test
+\end{itemize}
+All the things above have to be done \textbf{before} looking at any numerical data. \\
+So, after all of these, we can carry out experiments and collect data, then make a decision. Moreover, we can also supplement our decision with a p-values, which is an indicator of the strength of evidence against our null hypothesis in favour of the alternative hypothesis. \\
+
+Suppose that $x= x_{1}, x_{2}, \ldots, x_{n}$ of $X = X_{1}, X_{2}, \ldots, X_{n}$ are the collected data. Then we can compute the observed value of test statistic by
+\begin{equation*}
+t_{obs} = T(x)
+\end{equation*}
+The p-values can be computed by:
+\begin{itemize}
+\item if $H_{0}: \theta = \theta_{0}$ \& $H_{1}: \theta >\theta_{0}$, $p-values = P_{H_{0}}(T(x) \geq t_{obs})$
+\item if $H_{0}: \theta = \theta_{0}$ \& $H_{1}: \theta <\theta_{0}$, $p-values = P_{H_{0}}(T(x) \leq t_{obs})$
+\item if $H_{0}: \theta = \theta_{0}$ \& $H_{1}: \theta  \neq \theta_{0}$, $p-values = 2 \times min\{P_{H_{0}}(T(x) \geq t_{obs}), P_{H_{0}}(T(x) \leq t_{obs})\}$
+\end{itemize}
+In all 3 cases, we can observe that p-values is always the probability under null hypothesis that the test statistic would be as unusual or more unusual than the observation.\\
+
+The general threshold of p-values is:
+\begin{itemize}
+\item very strong evidence against $H_{0}$ in favour of $H_{1}$: $0 \sim 0.01$
+\item reasonably strong evidence against $H_{0}$ in favour of $H_{1}$: $0.01 \sim 0.05$
+\item some (borderline, marginal, weak) evidence against $H_{0}$ in favour of $H_{1}$: $0.05 \sim 0.1$
+\item no evidence against $H_{0}$ in favour of $H_{1}$: $ > 0.1$
+\end{itemize}
+\subsection{Example continued from 3.8}
+Suppose we have done n=15 experiments and collect data as $7, 11, 10, 11, 6, 7, 10, 9, 7 ,5, 11, 5, 9, 6, 18$ (sum is 132). And we are testing $H_{0}: \lambda = 7.3$ \& $H_{1}: \lambda > 7.3$ with aiming a 5\% significance level. \\
+
+First of all, computing d:
+\begin{equation*}
+0.05 \geq P(Pois(15\times 7.3) \geq d) = P(Pois(109.5) \geq d)
+\end{equation*}
+By using R: $qpois(0.95, 109.5) = 127 \equiv P(Pois(109.5) \geq 128)$, hence d is 128. 
+\begin{equation*}
+\sum_{i=1}^{15} x_{i}\geq 128
+\end{equation*}
+In conclusion, based on the observed data (sum is 132 - fall in the critical region), we can decided to reject $H_{0}$ in favour of $H_{1}$.\\
+However, what is the p-values?
+\begin{equation*}
+P-values = P_{H_{0}}(T(x) \geq t_{obs}) = P_{H_{0}}(Poisson(109.5) \geq 132)
+\end{equation*}
+By using R: $1-ppois(131, 109.5) = 0.02$. This can be interpreted as if the null hypothesis claim $H_{0}: \lambda = 7.3$ is true, then the observed total from 15 experiments resulting in 132 or even more would occur 2\% of the time in the long run. This is quite rare so that there is reasonably strong evidence against $H_{0}: \lambda = 7.3$ in favour of $H_{1}: \lambda > 7.3$.
+\subsection{Duality between CIs \& hypothesis testings}
+Background events: since p-values are often misinterpreted, some journal banned hypothesis test in favour of CIs. However does this really improved? \\
+
+\noindent
+First of all, CIs are misinterpreted quite often as well.\\
+Secnondly, more importantly, there is a duality between CIs \& hypothesis testings. Given a dataset, a CI provides a range/set of parameter values which true value would have reasonably likely have occurred - range of plausible parameter values. On the other hand, given a parameter values, a hypothesis test specifies a range of data values would have been unlikely to be observed.\\
+We can see the CIs are the inverse of hypothesis testing. \\
+
+For example, a two-sided test, the reject region is: $\bar{X} \leq \mu_{0} - t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}}$ or $\bar{X} \geq \mu_{0} + t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}}$\\
+Thus, the accept region is: $\mu_{0} - t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}} \leq \bar{X} \leq \mu_{0} + t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}}$ \\
+Also equivalence to: $ \bar{X} - t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}} \leq  \mu_{0} \leq \bar{X} + t^{\frac{1-\alpha}{2}}_{n-1} \times \frac{s}{\sqrt{n}}$ \\
+
+Therefore, when pivot variable cannot be constructed, we can still construct CIs by inverting hypothesis test.
+
+\subsection{Generalised likelihood ratio test - GLRT}
+Likelihood ratio tests can be generalised to scenarios when the null \& alternative hypothesis are not a single point, but is multidimensional.\\
+
+Suppose now we declare that the null hypothesis as $H_{0}: \theta \in \{H_{0} \}$, where $ \{H_{0} \}$ is a subset of the full parameter space $\{H\}$ and alternative hypothesis as $H_{1}: \theta \in \{H_{1} \}$, where $\{H_{1} \}$ is another subset of the full parameter space which disjoint with $\{H_{0} \}$. If we are considering two-sided test: $\{H_{1} \} = \{H_{0} \}^c$ (complement).\\
+Mathematically, the GLRT statistic is defined as:
+\begin{equation*}
+\frac{\underset{\theta \in \{H_{0}\}}{sup} L(\theta | X)}{\underset{\theta \in \{H_{1}\}}{sup} L(\theta | X)}
+\end{equation*}
+Where $\underset{\theta \in \{H_{0}\}}{sup} L(\theta | X)$ is the best possible likelihood under $H_{0}$ and $\underset{\theta \in \{H_{1}\}}{sup} L(\theta | X)$ is the best possible likelihood under $H_{1}$\\
+
+If this ratio is small, then the data would be more likely occurred under $ \{H_{1} \}$
+
+\subsubsection{Example: comparing two group means under the same variance}
+Suppose that:
+\begin{itemize}
+\item $X_{1} = (X_{11}, X_{12}, \ldots, X_{1n_{1}}) \overset{iid}{\sim} N^{*}(\mu_{1}, \sigma^2)$
+\item $X_{2} = (X_{21}, X_{22}, \ldots, X_{2n_{2}}) \overset{iid}{\sim} N^{*}(\mu_{2}, \sigma^2)$
+\end{itemize}
+We want to test that whether the two groups' means are equal: $H_{0}: \mu_{1} = \mu_{2}$ \& $H_{1}: \mu_{1} \neq \mu_{2}$ \\
+
+The likelihood function is:
+\begin{equation*}
+L(\mu_{1}, \mu_{2} | X) = (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}+n_{2}} exp[-\frac{1}{2\sigma^2} \sum_{i=1}^{n_{1}} (X_{1i} - \mu_{1})^2 -\frac{1}{2\sigma^2} \sum_{i=1}^{n_{2}} (X_{2i} - \mu_{2})^2]
+\end{equation*} \\
+
+For numerator: $\underset{\theta \in \{H_{0}\}}{sup} L(\mu_{1}, \mu_{2} | X)$ \\
+We can use the common mean to maximise it under null hypothesis ($H_{0}: \mu_{1} = \mu_{2}$), since the power of the exponential is negative, we want to make it close to zero as much as possible.
+\begin{equation*}
+\hat{\mu_{1}} = \hat{\mu_{2}} = \frac{\sum_{i=1}^{n_{1}} X_{1i} + \sum_{i=1}^{n_{2}} X_{2i}}{n_{1}+n_{2}} = \bar{X}_{..}
+\end{equation*}
+Therefore, the maximum likelihood achieved under null is:
+\begin{align*}
+\underset{\theta \in \{H_{0}\}}{sup} L(\mu_{1}, \mu_{2} | X) &= L(\bar{X}_{..}, \bar{X}_{..}|X) \\
+&= (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}+n_{2}} exp[-\frac{1}{2\sigma^2} \sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{..})^2 -\frac{1}{2\sigma^2} \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{..})^2]
+\end{align*}
+Again, to maximum it, we need to look at the exponent, since others are just constants:
+\begin{align*}
+\underbrace{\sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{..})^2 + \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{..})^2}_{\text{total sum of squared deviation - $SS_{total}$}}
+&= \sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.} + \bar{X}_{1.} - \bar{X}_{..})^2 \text{\circled{1}} \\
+&+ \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.} + \bar{X}_{2.} - \bar{X}_{..})^2 \text{\circled{2}}
+\end{align*}
+Where, $\bar{X_{1.}}$ is the sample mean of group 1 and $\bar{X_{2.}}$ is the sample mean of group 2. \\
+For \circled{1}:
+\begin{align*}
+\sum_{i=1}^{n_{1}} (\underbrace{X_{1i} - \bar{X}_{1.}}_{a} + \underbrace{\bar{X}_{1.} - \bar{X}_{..}}_{b})^2 &= \sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})^2 \\
+&+ 2 (\bar{X}_{1.} - \bar{X}_{..})\underbrace{\sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})}_{=0} \\
+&+ \sum_{i=1}^{n_{1}} (\bar{X}_{1.} - \bar{X}_{..})^2 \\
+&= \sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})^2 + n_{1}(\bar{X}_{1.} - \bar{X}_{..})^2
+\end{align*}
+Similarly for \circled{2}:
+\begin{equation*}
+\sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.} + \bar{X}_{2.} - \bar{X}_{..})^2 = \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.})^2 + n_{2}(\bar{X}_{2.} - \bar{X}_{..})^2
+\end{equation*}
+Hence overall:
+\begin{align*}
+SS_{total} = \text{\circled{1} + \circled{2}} &= \underbrace{\sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})^2 + \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.})^2}_{\text{within groups' sum of squared deviation / residual sum of squares}} \\
+&+\underbrace{ n_{1}(\bar{X}_{1.} - \bar{X}_{..})^2 + n_{2}(\bar{X}_{2.} - \bar{X}_{..})^2}_{\text{between groups sum of squares}}
+\end{align*} \\
+
+For denominator: $\underset{\theta \in \{H_{1}\}}{sup} L(\theta | X)$ \\
+Since the alternative hypothesis states that $H_{1}: \mu_{1} \neq \mu_{2}$, we can use $\hat{\mu_{1}} = \bar{X}_{1.}$ and $\hat{\mu_{2}} = \bar{X}_{2.}$ to maximise it. \\
+\begin{align*}
+\underset{\theta \in \{H_{1}\}}{sup} L(\theta | X) &= L(\bar{X}_{1.}, \bar{X}_{2.} |X) \\
+&= (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}+n_{2}} exp[-\frac{1}{2\sigma^2} \sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})^2 -\frac{1}{2\sigma^2} \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.})^2] \\
+&= (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}+n_{2}} exp[-\frac{1}{2\sigma^2} \underbrace{\text{within group $SS_{total}$}}_{\text{from above}}]
+\end{align*} \\
+
+In confusion:
+For GLRT $\frac{\underset{\theta \in \{H_{0}\}}{sup} L(\theta | X)}{\underset{\theta \in \{H_{1}\}}{sup} L(\theta | X)}$: \\
+The numerator can be expressed as:
+\begin{equation}
+(\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}+n_{2}} exp[-\frac{1}{2\sigma^2} (\sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})^2 + \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.})^2 + n_{1}(\bar{X}_{1.} - \bar{X}_{..})^2 + n_{2}(\bar{X}_{2.} - \bar{X}_{..})^2]
+\end{equation}
+The denominator can be expressed as:
+\begin{equation}
+(\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}+n_{2}} exp[-\frac{1}{2\sigma^2} (\sum_{i=1}^{n_{1}} (X_{1i} - \bar{X}_{1.})^2 + \sum_{i=1}^{n_{2}} (X_{2i} - \bar{X}_{2.})^2)]
+\end{equation} \\
+
+So the GLRT statistic reduced to:
+\begin{equation*}
+\Lambda = \frac{\underset{\theta \in \{H_{0}\}}{sup} L(\theta | X)}{\underset{\theta \in \{H_{1}\}}{sup} L(\theta | X)} = \frac{(1)}{(2)} = exp[-\frac{1}{2\sigma^2} (n_{1}(\bar{X}_{1.} - \bar{X}_{..})^2 + n_{2}(\bar{X}_{2.} - \bar{X}_{..})^2)]
+\end{equation*}\\
+
+From the reduced equation, the ratio of $\Lambda$ is small when the between groups $SS_{total}$ is large, where when the mean of two groups are far apart. Hence, the GLRT simplifies the rule to be reject $H_{0}: \mu_{1} = \mu_{2}$ in favour of $H_{1}: \mu_{1} \neq \mu_{2}$ if:
+\begin{equation*}
+[\bar{X}_{1.} - \bar{X}_{2.} \leq d_{1}] \cup [\bar{X}_{1.} - \bar{X}_{2.} \geq d_{2}]
+\end{equation*}
+
+So now, how do we choose the critical value ($d_{1}$ and $d_{2}$) to control the type 1 error? \\
+Recall that (two sample):
+\begin{equation*}
+\bar{X}_{1.} - \bar{X}_{2.} \sim N(\mu_{1} - \mu_{2}, \frac{\sigma^2}{n_{1}} + \frac{\sigma^2}{n_{2}})
+\end{equation*}
+Under the null hypothesis, $\mu_{1} - \mu_{2} = 0$ or in general $\mu_{1} - \mu_{2} = \Delta_{0}$ (some specific value) \\
+Then we can set the critical value to be:
+\begin{equation*}
+d_{1} = \Delta_{0} - z^{1 - \frac{\alpha}{2}} \sigma \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}
+\end{equation*}
+\begin{equation*}
+d_{2} = \Delta_{0} + z^{1 - \frac{\alpha}{2}} \sigma \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}
+\end{equation*}
+This is the 2-sample z-test. (Precondition: we know the population variance)
+
+\subsubsection{What if we do not know $\sigma^2$ as well?}
+We could estimate the $\sigma^2$ by the \textbf{pooled variance} - weighted average of two individual sample variance. \\
+\color{brown}
+Aside:
+Suppose we have m samples: $X = (X_{1}, X_{2}, \ldots, X_{m})$, with sample size $n_{1}, n_{2}, \ldots, n_{m}$ respectively. Then mathematically, the pooled variance can be defined as:
+\begin{equation*}
+s_{pooled}^2 = \frac{\sum_{i=1}^{m}(n_{i} - 1)s_{i}^2}{\sum_{i=1}^{m}(\underbrace{n_{i} - 1)}_{\text{biased corrected}}} = \frac{(n_{1}-1)s_{1}^2 + \ldots + (n_{m} - 1)s_{m}^2}{n_{1} + \ldots + n_{m} - m}
+\end{equation*}
+\color{black}
+So for a two samples:
+\begin{equation*}
+s_{pooled}^2 = \frac{(n_{1} - 1)s_{1}^2 + (n_{2} - 1)s_{2}^2}{n_{1} + n_{2} - 2}
+\end{equation*}
+And we know that (previously section), we could use t-quantile to replace z-quantile:
+\begin{equation*}
+d_{1} = \Delta_{0} - t^{1 - \frac{\alpha}{2}}_{n_{1} + n_{2} - 2} \sigma_{pooled} \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}
+\end{equation*}
+\begin{equation*}
+d_{2} = \Delta_{0} + t^{1 - \frac{\alpha}{2}}_{n_{1} + n_{2} - 2} \sigma_{pooled} \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}
+\end{equation*}
+This is how two-sample t-test formed.
+
+\subsection{Goodness-of-fit test (categorial data)}
+Now, we have looked some quantitive data for LRT, surprisedly, LRT can also derive some useful test for categorial data. \\
+
+Recall that, the test statistic for goodness-of-fit is:
+\begin{equation*}
+\sum_{I} = \frac{(observed_{i} - expected_{i})^2}{expected_{i}} \sim \text{ Pearson's $\chi^2$}
+\end{equation*}
+How does this statistic come up? \\
+
+Suppose that $X = (X_{1}, X_{2}, \ldots, X_{k})$ are the counts in each category from a random sample of n units, where the total counts $X_{1} + X_{2} + \ldots, + X_{k} = n$.\\
+
+We can see that $X = (X_{1}, X_{2}, \ldots, X_{k}) \sim Multinomial(p_{1}, p_{2}, \ldots, p_{k})$, where p are denoted as the probability of the event. Then we begin with a single point null hypothesis.
+\begin{itemize}
+\item $H_{0}: p = (p_{1}, p_{2}, \ldots, p_{k}) = p^{*} = (p_{1}^{*}, p_{2}^{*}, \ldots, p_{k}^{*})$, where $p^{*}$ is the given of proportions.
+\item $H_{1}: p \neq p^{*}$ - interpret as there is at least one proportion is not correct
+\end{itemize}
+Construct the LRT:
+\begin{equation*}
+\Lambda = \frac{L(p^{*} | X)}{L(p|X)}
+\end{equation*}
+The MLE of the p under $H_{1}$ is the sample proportion.\\
+\color{blue}
+Verification:\\
+Suppose that $X = (X_{1}, X_{2}, \ldots, X_{k}) \sim Multinomial(p_{1}, p_{2}, \ldots, p_{k})$. \\
+Then:
+\begin{equation*}
+PMF = \frac{n!}{x_{1}!, x_{2}!, \ldots, x_{k}!} p_{1}^{x_{1}} \times p_{2}^{x_{2}} \times \dots \times p_{n}^{x_{k}} = n! \prod_{i=1}^{k} \frac{p_{i}^{x_{i}}}{x_{i}!}
+\end{equation*}
+Where n is total occurrences, k is the number of incidences in the category \\
+The log-likelihood function is:
+\begin{align*}
+log(L(p|X)) &= log(n! \prod_{i=1}^{k} \frac{p_{i}^{x_{i}}}{x_{i}!}) \\
+&= log(n!) + \sum_{i=1}^{k}x_{i}log(p_{i}) - \sum_{i=1}^{k}log(x_{i}!) 
+\end{align*}
+As we know the constraint is $\sum_{i=1}^{k} p_{i} = 1$, so we would apply Lagrange multiplier: $L(x, \lambda) = f(x) - \lambda g(x)$, where $g(x)$ is an equality constraint.\\
+Hence:
+\begin{equation*}
+log(L(p, \lambda)) = log(L(p)) + \lambda(1-\sum_{i=1}^{k} p_{i})
+\end{equation*}
+Where we see here, it makes no difference since $1-\sum_{i=1}^{k} p_{i} = 0$ always. \\
+Then on differentiating the Lagrange multiplier:
+\begin{align*}
+\frac{d}{dp_{i}} log(L(p, \lambda)) &= \frac{d}{dp_{i}} log(L(p)) + \lambda(1-\sum_{i=1}^{k} p_{i}) \\
+& since, \frac{d}{dp_{i}} \lambda(1-\sum_{i=1}^{k} p_{i}) = \underbrace{\frac{d}{dp_{i}} \lambda}_{=0} - \underbrace{\frac{d}{dp_{i}} \lambda p_{1}}_{=\lambda \text{ if i is 1, else 0}} - \ldots - \underbrace{\frac{d}{dp_{i}} \lambda p_{k}}_{=\lambda \text{ if i is k, else 0}} \\
+& \text{and we know that each time i would be one of \{1, 2, ... ,k\} so, }\\
+& \frac{d}{dp_{i}} \lambda(1-\sum_{i=1}^{k} p_{i}) = \lambda \\
+&=  \frac{d}{dp_{i}} (log(n!) + \sum_{i=1}^{k}x_{i}log(p_{i}) - \sum_{i=1}^{k}log(x_{i}!)) - \lambda \\
+&= \frac{x_{i}}{p_{i}} - \lambda
+\end{align*}
+So $p_{i}=\frac{x_{i}}{\lambda} \Rightarrow$ by applying the constraint $\sum_{i=1}^{k} p_{i}=\sum_{i=1}^{k} \frac{x_{i}}{\lambda} \Rightarrow 1 = \sum_{i=1}^{k} \frac{x_{i}}{\lambda} \Rightarrow \lambda = n$ \\
+By substituting back, we got $p_{i} = \frac{x_{i}}{n}$ \\
+
+\color{black}
+Then we could use sample proportion $(\hat{p_{1}} = \frac{X_{1}}{n}, \ldots, \hat{p_{k}} = \frac{X_{k}}{n})$ to apply the LRT under $H_{1}$:
+\begin{align*}
+\Lambda &= \frac{ {n \choose x}p_{1}^{*^{x_{1}}} \times p_{2}^{*^{x_{2}}} \times \ldots \times p_{k}^{*^{x_{k}}}} {{n \choose x}\hat{p}_{1}^{x_{1}} \times \hat{p}_{2}^{x_{2}} \times \ldots \times \hat{p}_{k}^{x_{k}}} \\
+&= (\frac{p_{1}^{*}}{\hat{p}_{1}})^{x_{1}} \times (\frac{p_{2}^{*}}{\hat{p}_{2}})^{x_{2}} \times \ldots \times (\frac{p_{k}^{*}}{\hat{p}_{k}})^{x_{2}}
+\end{align*}
+The trick we can do here is negative-log-transform. Since the log function is monotone increasing. So small value of $\Lambda \equiv$ small value of $log(\Lambda) \equiv$ large value of $-log(\Lambda)$. 
+\begin{align*}
+-log(\Lambda) &= x_{1} log(\frac{\hat{p}_{1}}{p_{1}^{*}}) + x_{2} log(\frac{\hat{p}_{2}}{p_{2}^{*}}) + \ldots + x_{k} log(\frac{\hat{p}_{k}}{p_{k}^{*}}) \\
+& \\
+& \text{since $\hat{p}_{i} = \frac{x_{1}}{n}$} \\
+&=  x_{1} log(\frac{x_{1}}{np_{1}^{*}}) + x_{2} log(\frac{x_{2}}{np_{2}^{*}}) + \ldots + x_{k} log(\frac{x_{k}}{np_{k}^{*}}) \\
+&\\
+& \text{since $p_{i}^{*}$ is the true proportion for the i-th category,} \\
+& \text{$np_{i}^{*}$ would be its expected counts}\\
+&= O_{1} log(\frac{O_{1}}{E_{1}}) + O_{2} log(\frac{O_{2}}{E_{2}}) + \ldots + O_{k} log(\frac{O_{k}}{E_{k}})\\
+&= \sum_{cells_{i}} O_{i} log(\frac{O_{i}}{E_{i}})
+\end{align*}
+We end up with the exact form of GLRT statistic for categorial data. However, why do we use the Pearson's $\chi^2 = \frac{(observed_{i} - expected_{i})^2}{expected_{i}}$? \\
+
+The reasons are:
+\begin{enumerate}
+\item the distribution of $-log(\Lambda) = \sum_{cells_{i}} O_{i} log(\frac{O_{I}}{E_{i}})$ is not easy to determine
+\item the first-order Taylor expansion of the Pearson's $\chi^2$ is approximate to $-2log(\Lambda)$, since the leading term of Taylor expand of $-2log(\Lambda)$ is the Pearson's $\chi^2$
+\item the distribution of Pearson's $\chi^2$ is easier to derive, because Pearson's $\chi^2$ converges to $\chi^2$ distribution for large n
+\item  Pearson's $\chi^2$ is published in 1900, back the day without calculator, it is easier to compute by hand
+\end{enumerate}
+
+\subsection{Application of goodness-of-fit test: Mendel's data}
+In 1865, Mendel publish a paper that illustrate the offsprings (total counts is 556) of crossed produced yellow-smooth-male \& green-wrinkly-female peas are:
+\begin{center}
+\begin{tabular}{||c | c | c | c||} 
+ \hline
+ Type & Frequency & Mendel's counts & Expected counts\\ [0.5ex] 
+ \hline\hline
+ Smooth yellow & $\frac{9}{16}$ & 315 & 312.75 \\ 
+ Smooth green & $\frac{3}{16}$ & 108 & 104.25\\  
+ Wrinkly yellow & $\frac{3}{16}$ & 102 & 104.25\\
+ Wrinkly green & $\frac{1}{16}$ & 31 & 34.75\\
+ \hline
+\end{tabular}
+\end{center}
+Now we are interested in, are Mendel's counts consistent with the frequency derived from his theory?\\
+\begin{itemize}
+\item $H_{0}: p = (p_{1}, p_{2}, p_{3}, p_{4})^T = (\frac{9}{16}, \frac{3}{16}, \frac{3}{16}, \frac{1}{16})^T = p^*$
+\item $H_{1} \neq p^*$ or at least one proportion is wrong
+\end{itemize}
+Constructing by the exact GLRT statistic:
+\begin{align*}
+-2log(\Lambda) &= 2\sum_{cells_{i}} O_{i} log(\frac{O_{i}}{E_{i}}) \\
+&= 2[315 \times log(\frac{315}{312.75}) + 108 \times log(\frac{108}{104.25}) \\
+&+ 102 \times log(\frac{102}{104.25}) + 31 \times log(\frac{31}{34.75})] \\
+& = 0.618
+\end{align*}
+Constructing by the Pearson's $\chi^2$:
+\begin{equation*}
+\text{Pearson's $\chi^2$} = \frac{(observed_{i} - expected_{i})^2}{expected_{i}} = 0.604
+\end{equation*}
+Under the null hypothesis, the statistic has an approximate $\chi^2$ with the degrees of the freedom = k - 1 = 4 - 1 = 3. \\
+Hence, the p-value for the test is:
+\begin{equation*}
+P(\chi^2_{3} \geq 0.604 / 0.618) \approx 0.9
+\end{equation*}
+With such a large p-value, the conclusion for now is Mendel's counts are consistent with his theory (retain null hypothesis) / there is no evidence against Mendel's theory. However, we cannot say that Mendel's counts support his theory, since the theory might be refined. Moreover, the reason for it is actually, we can never find evidence for a null hypothesis by random experiments (you cannot prove some theories with only one example). \\
+
+Later, Fisher noticed that in here, the p-value is quite large, where the observed counts are very well alined with the expected counts. Then Fisher went to examine all of Mendel's data in every experiments. Fisher pooled all counts together and calculate the p-value to be 0.99996 for testing the null - something odd here... \\
+
+While getting a small p-value makes us suspicious about the null (reject), however getting a very large p-value would make us suspicious about the data - could be either fabricated or generated by pseudo-replication.
+\begin{itemize}
+\item data fabrication: the real data should look like the proportion is closed to the expected when the sample size is increase, not for any sample size that they are all very close to the expected proportion. \textit{By adding or subtracting 2 times its standard error won't make it suspicious.}
+\item pseudo replication: making multiple measurements on each unit but pretend that they are individual from independent units. For example, applying 2 pesticides to two trees and we take 1000 leaves on each tree, then we claim that we collect 2000 individual samples is a typical pseudo replication.
+\end{itemize}
+
+\subsection{Working with two or more categorial data}
+When we have two categorial data, we can know a bit more than just one categorial data, such as the independence and homogeneity (sample from different sample might or might not be identical). The test of independence and homogeneity by using GLRT or  Pearson's $\chi^2$ are the same, however the way of collecting data are different. \\
+
+\subsubsection{independence test}
+Samples are from a \textbf{single} population and then cross-clarified based on two or more categorial factors. 
+\begin{itemize}
+\item $H_{0}: p_{ij} = p_{i.} \times p_{.j}$
+\item $H_{1}: p_{ij} \neq p_{i.} \times p_{.j}$ for at least one pair of i and j.
+\end{itemize}
+Where $p_{ij}$ is the population proportion of being in both factor i and j. $p_{i.} \& p_{.j}$ are population proportion in factor i \& j respectively. \\
+
+\subsubsection{homogeneity test}
+Samples are separately collected from \textbf{two subpopulations} based on a categorial factor. Then we are interested in whether the distribution of the categorial factor are homogenous across those two subpopulations.\\
+
+Example: below is a table of computer replacement in UQ's staffs (in Science, Engineering, and Arts faculty).
+\begin{center}
+\begin{tabular}{||c | c | c | c | c||} 
+ \hline
+ OS & Science & Engineering &  Arts & Total\\ [0.5ex] 
+ \hline\hline
+Windows & 12 (12.51) & 17 (13.90) & 9  (11.58) & 38 \\ 
+Mac & 8 (10.54) & 9 (11.71) & 15 (9.75) & 32\\  
+Linux & 7 (3.95) & 4 (4.39) & 1 (3.66) & 12\\
+\hline
+Total & 27 & 30 & 25 & 82\\
+ \hline
+\end{tabular}
+\end{center}
+Where the value in the parenthesis is the expected value. \\
+For instance, the expected counts for staff in Science who preferred Windows replacement is: $E = np = \text{total of science staff} \times \frac{\text{total of Windows users}}{\text{total of staffs}} = 27 \times \frac{38}{82} = 12.51$ \\
+\begin{itemize}
+\item $H_{0}: p_{science} = p_{engineering} = p_{arts} = p_{common}$, where $p_{i} = (p_{w}, p_{m}, p_{L})^T_{i}$
+\item $H_{1}: $ not all vectors of probabilities at the same or equivalently, there are no restrictors on each vector of probability 
+\item The number of free parameters under the alternative: (in general) (\#rows - 1) $\times$ \#columns, in this case, 2 $\times 3 = 6$
+\item The number of free parameters under the null: (in general) \#rows -1, in this case, 3 - 1 = 2
+\item The degree of freedom is: c(r-1) - (r-1) = (c-1)(r-1), in this case, 2 $\times$ 2 = 4
+\end{itemize} 
+Constructing test statistic:
+\begin{align*}
+\text{Pearson's $\chi^2$} &= \sum_{cells} \frac{(observed_{i} - expected_{i})^2}{expected_{i}} \\ 
+&= \frac{(12 - 12.51)^2}{12.51} + \frac{(17 - 13.90)^2}{13.90} + \ldots + \frac{(1 - 3.66)^2}{3.66} \\
+&= 9.66
+\end{align*}
+Finding p-value:
+\begin{equation*}
+P(\chi^2_{df=4} \geq 9.66) = 1 - pchisq(9.66, 4) = 0.047 = 4.7\%
+\end{equation*}
+So the confusion for now is: there is moderately strong evidence that computer operation system preference may differ across the 3 different facilities. \\
+
+\textbf{Is something wrong here? }\\ 
+Recall that, to be able to do Normal approximation on a binomial, we need at least 10 successes and 10 failures. Similarly for Pearson's $\chi^2$ test, we need:
+\begin{itemize}
+\item At least 80\% of cells in the table have more than or equal to 10 counts
+\item all cells must have at least 5 counts
+\end{itemize}
+In the example showed above, it does not satisfied that condition, so in this case we have to consider the Fisher exact test.
+
+\subsection{Fisher exact test}
+In general, Fisher exact test uses the definition of p-values (how often we see unusual data?) and works on any sample size, however we only can do it by computers since we need a large random data sets. Steps:
+\begin{enumerate}
+\item argue that why the rows total and columns total can be fixed or given, under the null hypothesis. For instance, in previous example, maybe the computer can be changed in 4 years, now this years total number of staffs who wants to change their computer is depend on how many staff required for a computer 4 years ago - total staffs in each faculty (column).  As well as, some staff prefer windows so that no matter which faculty the staff is in, the staff always pick windows - total staffs who use windows/Mac/linux (row).
+\item under the null hypothesis, any configuration of counts with same row total and column total would have been equally likely to be observed - assuming the proportion are the same.
+\item simulate many different table with the same row total and column total and then determine how often we get something as unusual or more unusual
+\end{enumerate}
+
+Referring to pervious example, we can do:
+\begin{align*}
+&counts = c(12,17,9,8,9,15,7,4,1) \\
+&table2 = matrix(counts,nrow=3,byrow=T) \\
+&chisq.test(table2, simulate.p.value = T, B=1000000)
+\end{align*}
+
+\subsection{Comparing groups using quantitative data}
+Analysis of variance (ANOVA) is used to compare a quantitative factor. Interestingly, ANOVA is also a special case of linear model. \\
+
+Suppose we have J groups that:
+\begin{align*}
+&Y_{11}, Y_{12}, \ldots, Y_{1n_{1}} \overset{iid}{\sim} N^{*}(\mu_{1}, \sigma^2) \\ 
+\text{Independent with, } & Y_{21}, Y_{22}, \ldots, Y_{2n_{2}} \overset{iid}{\sim} N^{*}(\mu_{2}, \sigma^2) \\ 
+\text{Independent with, } & Y_{31}, Y_{32}, \ldots, Y_{3n_{3}} \overset{iid}{\sim} N^{*}(\mu_{3}, \sigma^2) \\
+&\dots \\
+\text{Independent with, } & Y_{J1}, Y_{J2}, \ldots, Y_{Jn_{J}} \overset{iid}{\sim} N^{*}(\mu_{J}, \sigma^2)
+\end{align*}
+Define our two hypothesis:
+\begin{itemize}
+\item $H_{0}: \mu_{1} = \mu_{2} = \mu_{3} = \ldots = \mu_{J}$
+\item $H_{1}: $ not all group means are the same or equivalent, there are no restrictors on the groups means
+\end{itemize}
+This is really extending the two-sample t-test (pervious notes) to more than two groups: using GLRT: 
+\begin{equation*}
+\Lambda = \frac{\underset{H_{0}}{sup} L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y)}{\underset{H_{1}}{sup} L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y)}
+\end{equation*}
+The likelihood function is:
+\begin{align*}
+L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y) &= \prod_{j=1}^{J}  (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{j}} exp[ - \frac{1}{2 \sigma^2} \sum^{n_{j}}_{i=1} (Y_{ji} - \mu_{j})^2] \\
+&= (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{1}} exp[ - \frac{1}{2 \sigma^2} \sum^{n_{1}}_{i=1} (Y_{1i} - \mu_{1})^2] \\
+& \times (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{2}} exp[ - \frac{1}{2 \sigma^2} \sum^{n_{2}}_{i=1} (Y_{2i} - \mu_{2})^2] \\
+& \ldots \\
+& \times (\frac{1}{\sqrt{2 \pi \sigma^2}})^{n_{J}} exp[ - \frac{1}{2 \sigma^2} \sum^{n_{J}}_{i=1} (Y_{Ji} - \mu_{J})^2] \\
+&=  (\frac{1}{\sqrt{2 \pi \sigma^2}})^{N} exp[ - \frac{1}{2 \sigma^2} \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \mu_{j})^2]
+\end{align*}
+Where $N = n_{1} + n_{2} + \ldots + n_{J}$ is the total sample size. \\
+
+So now we can have a look like the likelihood function under the null and under the alternative: \\
+\textbf{Under the null:} $H_{0}: \mu_{1} = \mu_{2} = \mu_{3} = \ldots = \mu_{J}$, we can use common mean (MLE):
+\begin{equation*}
+(\frac{1}{\sqrt{2 \pi \sigma^2}})^{N} exp[ - \frac{1}{2 \sigma^2} \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{..}})^2]
+\end{equation*}
+Where $\bar{Y_{..}}$ is the common mean, such that $\bar{Y_{..}} = \frac{\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} Y_{ji}}{N}$ - the average in the overall sample\\
+\textbf{Under the alternative:}
+\begin{equation*}
+(\frac{1}{\sqrt{2 \pi \sigma^2}})^{N} exp[ - \frac{1}{2 \sigma^2} \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})^2]
+\end{equation*}
+Where $\bar{Y_{j.}}$ is the mean in each j-th group, such that $\bar{Y_{j.}} = \frac{\sum_{i=1}^{n_{j}} Y_{ji}}{n_{j}}$ \\
+
+We can work on a bit of the numerator here, to simplify the expression, we can use the same methodology in before - adding $\bar{Y_{j.}}$ then subtracting $\bar{Y_{j.}}$ to make a pair.
+\begin{align*}
+\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{..}})^2 &= \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (\underbrace{Y_{ji} - \bar{Y_{j.}}}_{a} + \underbrace{\bar{Y_{j.}} -\bar{Y_{..}}}_{b})^2 \\
+&= \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} \underbrace{(Y_{ji} - \bar{Y_{j.}})^2}_{a^2} + \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} \underbrace{2(Y_{ji} - \bar{Y_{j.}})(\bar{Y_{j.}} -\bar{Y_{..}})}_{2ab} \\
+ &+ \sum_{j=1}^{J}\sum^{n_{j}}_{i=1}\underbrace{(\bar{Y_{j.}} -\bar{Y_{..}})^2}_{b^2} \\
+ &= \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})^2 + 2 \sum_{j=1}^{J} (\bar{Y_{j.}} -\bar{Y_{..}}) \underbrace{\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})}_{=0} \\
+ &+ \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (\bar{Y_{j.}} -\bar{Y_{..}})^2 \\
+ &= \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})^2 + \sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (\bar{Y_{j.}} -\bar{Y_{..}})^2
+\end{align*}
+Where it is similar with two sample t-test, but with more groups.
+\begin{equation*}
+\underbrace{\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{..}})^2}_{\text{total sum of square}} = \underbrace{\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})^2 }_{\text{residual sum of squares}} + \underbrace{\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (\bar{Y_{j.}} -\bar{Y_{..}})^2}_{\text{sum of squares between groups}}
+\end{equation*}
+Thus, the maximal likelihood function is:
+\begin{itemize}
+\item under the null: $\underset{H_{0}}{sup} L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y) = (\frac{1}{\sqrt{2 \pi \sigma^2}})^{N} exp[- \frac{1}{2 \sigma^2} (SS_{groups} + SS_{residuals})]$
+\item under the alternative: $\underset{H_{1}}{sup} L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y) = (\frac{1}{\sqrt{2 \pi \sigma^2}})^{N} exp[- \frac{1}{2 \sigma^2} SS_{groups}]$
+\end{itemize}
+Substituting back to the test statistic definition:
+\begin{equation*}
+\Lambda = \frac{\underset{H_{0}}{sup} L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y)}{\underset{H_{1}}{sup} L( \mu_{1}, \mu_{2}, \mu_{3}, \ldots , \mu_{J}| Y)} = exp[- \frac{1}{2 \sigma^2} SS_{groups}]
+\end{equation*}
+We can see that since the exponent is negative, large values of $SS_{groups}$ resulting small values of $\Lambda$\\
+Under the null: 
+\begin{equation*}
+\bar{Y}_{j.} \overset{ind}{\sim} N(\mu, \sigma^2 / n_{j})
+\end{equation*}
+\begin{equation*}
+\frac{\sqrt{n_{j}}}{\sigma}(\bar{Y}_{j.} - \mu) \overset{ind}{\sim} N(0, 1) 
+\end{equation*}
+When we square it, we get the chi-square with degree of freedom 1 (chi-square distribution)
+\begin{equation*}
+\frac{n_{j}}{\sigma^2}(\bar{Y}_{j.} - \mu)^2 \overset{ind}{\sim} \chi^2_{df=1}
+\end{equation*}
+Which can be further extends to:
+\begin{equation*}
+\frac{1}{\sigma^2}\sum_{j=1}^{J} n_{j}(\bar{Y}_{j.} - \mu)^2 \overset{ind}{\sim} \chi^2_{df=J}
+\end{equation*}
+Well, we do not know the common mean ($\mu$) for now, however our best guess is the grant mean ($\bar{Y}_{..}$):
+\begin{equation*}
+\frac{1}{\sigma^2}\sum_{j=1}^{J} n_{j}(\bar{Y}_{j.} - \bar{Y}_{..})^2 \overset{ind}{\sim} \chi^2_{df=J - 1}
+\end{equation*}
+Note: when we use the common mean (grant mean), we lost 1 degree of freedom. With knowing sample size N, if you know $n_{1}$ up to $n_{J-1}$, then without counting, we know that the last one is $N - n_{J-1} - n_{J-2} - \ldots - n_{1}$ so that the total free parameters is number of groups minus 1. \\
+With further rearrangements:
+\begin{equation*}
+\sum_{j=1}^{J} n_{j}(\bar{Y}_{j.} - \bar{Y}_{..})^2 \overset{ind}{\sim} \sigma^2 \chi^2_{df=J - 1}
+\end{equation*}
+\begin{equation*}
+\frac{1}{J-1}\sum_{j=1}^{J} n_{j}(\bar{Y}_{j.} - \bar{Y}_{..})^2 \overset{ind}{\sim} \sigma^2 \frac{\chi^2_{df=J - 1}}{J-1}
+\end{equation*}
+\begin{equation*}
+\frac{SS_{groups}}{J-1} \overset{ind}{\sim} \sigma^2 \frac{\chi^2_{df=J - 1}}{J-1} \tag*{\circled{1}}
+\end{equation*}
+Moreover, we do not know $\sigma^2$ as well, recall that we use pooled variance perviously(3.12.2):
+\begin{align*}
+S_{pooled}^2 &= \frac{(n_{1} - 1)s_{1}^2 + (n_{2} - 1)s_{2}^2 + \ldots + (n_{J} - 1)s_{J}^2}{N-J} \\
+&= \frac{\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})^2}{N-J} \\ 
+&= \frac{SS_{residuals}}{N-J}
+\end{align*}
+Similarly to the mythology above:
+\begin{equation*}
+\frac{SS_{residuals}}{N-J} \overset{ind}{\sim} \sigma^2 \frac{\chi^2_{df=N-J}}{N-J} \tag*{\circled{2}}
+\end{equation*}
+Another important ingredient is $SS_{residuals}$ is independent with $SS_{groups}$ \circled{3}. \\
+
+From \circled{1}, \circled{2}, \circled{3} we can form the F distribution:
+\begin{equation*}
+\frac{\frac{SS_{groups}}{J-1}}{\frac{SS_{residuals}}{N-J}} \sim \frac{ \sigma^2 \frac{\chi^2_{df=J - 1}}{J-1} }{\sigma^2 \frac{\chi^2_{df=N-J}}{N-J}} = F_{J-1, N-J}
+\end{equation*}
+Where:
+\begin{itemize}
+\item J - 1: measures the differences in complexities (number of parameters) between alternative model and null model - we called it as "signal"
+\item N-J: determines how accurate we can measure the common variance / residual - we call it as "noise"
+\end{itemize}
+
+All the derivations above can be summarised in a ANOVA table:
+\begin{center}
+\begin{tabular}{||c| | c | c | c | c | c||} 
+ \hline
+ Source & df & SS &  MS (SS / df) & F statistic & Pr(F)\\ [0.5ex] 
+ \hline\hline
+Groups & J - 1 & $\sum_{j=1}^{J}n_{j} (\bar{Y_{j.}} -\bar{Y_{..}})^2$ & $\frac{SS_{group}}{J -1}$ & $\frac{MS_{groups}}{MS_{residual}}$ & $P(\mathcal{F}_{J-1, N-J} \geq F)$ \\ 
+Residual & N - J & $\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{j.}})^2 $ & $\frac{SS_{residual}}{N-J}$ & &\\
+\hline
+Total &N - 1 & $\sum_{j=1}^{J}\sum^{n_{j}}_{i=1} (Y_{ji} - \bar{Y_{..}})^2$ & & &\\
+ \hline
+\end{tabular}
+\end{center}
+
+\subsection{Example of ANOVA - movies genres}
+suppose we have collected some data about movies rating on different genres as following:
+\begin{center}
+\begin{tabular}{||c  c  c  c||}
+\hline
+Genre & mean (rating) & standard deviation (rating) & sample size \\ [0.5ex]
+\hline \hline
+Action &44.97 & 25.10 & 31 \\
+Comedy & 49.78 & 26.35 & 27 \\
+Horror & 41.29 & 27.04 & 17 \\
+Romance & 47.20 & 31.57 & 10 \\
+Animation & 60.58 & 26.73 & 12 \\
+Thriller & 62.38 & 28.66 & 13 \\
+\hline
+Total & & &110 \\
+\hline
+\end{tabular}
+\end{center}
+Now we are interested in are there any difference in average between movies rating across genres? \\
+
+\noindent
+The overall mean is the sum of each sample in each genre / total sample size:
+\begin{equation*}
+\bar{Y}_{..} = \frac{31 \times 44.97 + 27 \times 49.78 + \ldots + 13 \times 62.38}{110} = 49.55
+\end{equation*}
+The overall variance is:
+\begin{equation*}
+S^2_{pooled} = \frac{(n_{1} - 1)s_{1}^2 + (n_{2} - 1)s_{2}^2 + \ldots + (n_{J} - 1)s_{J}^2}{N-J} = \frac{30 \times 25.10^2 + \ldots + 12 \times 28.66^2}{110 - 6} = 26.91^2
+\end{equation*}
+The sum of square between groups are:
+\begin{equation*}
+SS_{groups} = 31 \times (44.97 - 49.55 (\bar{Y}_{..}))^2 + \ldots + 13 \times (62.38 - 49.55)^2 = 5466.63
+\end{equation*}
+The ANOVA table (with given $SS_{residual}$ is 75337.42) in this question is:
+\begin{center}
+\begin{tabular}{||c| | c | c | c | c | c||} 
+ \hline
+ Source & df & SS &  MS (SS / df) & F statistic & Pr(F)\\ [0.5ex] 
+ \hline\hline
+Groups & 5 & 5466.63 & 1093.3 & 1093.3 / 724.4 = 1.509 & $P(\mathcal{F}_{5,  104} \geq 1.509) = 0.193$ \\ 
+Residual & 104 & 75337.42  &  724.4 & &\\
+\hline
+Total &109 &  & & &\\
+ \hline
+\end{tabular}
+\end{center}
+where, 1 - pf(1.509, 5, 104) = 0.193 \\
+
+Conclusion: there is no evidence that the movies rating in average are different across the 6 genres.
+
+\subsection{Bonferroni's correction}
+Continuing from the movie rating example, although the conclusion is no evidence against the movie rating means are different, we could actually see that the mean of "Horror" and "Thriller" are quite different. \\
+
+A quick two-sample T-test is conducted:\\
+
+Recall that (3.12.2):
+\begin{equation*}
+\bar{X}_{1.} - \bar{X}_{2.} \sim N(\mu_{1} - \mu_{2}, \frac{\sigma^2_{pooled}}{n_{1}} + \frac{\sigma^2_{pooled}}{n_{2}})
+\end{equation*}
+\begin{equation*}
+T = \frac{\bar{Y}_{Thriller .} - \bar{Y}_{Horror .} }{\sigma_{pooled} \sqrt{\frac{1}{n_{Thriller}} + \frac{1}{n_{Horror}}}} = \frac{62.38 - 41.29}{26.91 \times \sqrt{\frac{1}{13} + \frac{1}{17}}} = 2.13
+\end{equation*}
+with a degree of freedom of 104, since pooled variance is involved \\
+So, the p-value is:
+\begin{equation*}
+P(T_{df=104}  \geq 2.13) = 0.018 \equiv 1 - pt(2.13, 104)
+\end{equation*}
+Is this a contradiction compared with our result? \\
+No, this result needs to be corrected, since we compare the best and the worst group, they must have quite larger difference than other pairs. However, that does not interpret the overall (across the whole groups), as maybe next year, it would be another two categories are the best and the worst respectively. So how many ways there can be to form one best and one worst, ${6 \choose 2} = 15$ \\
+
+Above is the intuition of Bonferroni correction, we multiply the p-value with the total number of possible combination of the comparisons we could make. So in this case, the p-value after the correction is: $0.018 \times 15 = 0.27$, hence it is consistent with our conclusion before. \\
+
+In summary, we should only look pairwise comparisons when there is a significance level result. This protects us from overly large type \RomanNumeralCaps{1} error.
+
+\subsection{Contrast}
+In statistics, particularly in analysis of variance and linear regression, a contrast is a linear combination of variables (parameters or statistics) whose coefficients add up to zero, allowing comparison of different treatments. Mathematically, a contrast is any linear combination that:
+\begin{equation*}
+\sum^{J}_{j=1} a_{j}u_{j}
+\end{equation*}
+Where, $u = (u_{1}, u_{2}, \ldots, u_{J})^T$ and $\sum^{J}_{j=1} a_{j} = 0$
+
+\subsubsection{Sum constraint / Sum parametrisation}
+Under sum constraint, the one way ANOVA can be represent as 
+\begin{equation*}
+Y_{ji} = \mu + a_{j} + \varepsilon_{ji}
+\end{equation*}
+Where,
+\begin{itemize}
+\item $\mu$ is the overall mean that one has one parameter 
+\item $a_{j}$ is the main effect (difference between group mean and overall mean) due to a particular group j, where $a_{j}=\mu_{j}-\mu$ and it has J(total groups) parameters and it stratifies $\sum_{j=1}^{J} a_{j} = 0$
+\item $ \varepsilon_{ji}$ is the error terms
+\end{itemize}
+\textbf{In the sum parametrisation, each $a_{j}$ is itself a contrast.} \\
+Example: when j = 1,
+\begin{align*}
+\alpha_{1} &= \mu_{1} - \mu \\
+&= \mu_{1} - \frac{\mu_{1} + \mu_{2} + \ldots + \mu_{J}}{J} \\
+&= (1-\frac{1}{J}) \mu_{1} - \frac{1}{J} \mu_{2} - \ldots - \frac{1}{J} \mu_{J} \\
+&= (\frac{J-1}{J}) \mu_{1} - \frac{1}{J} \mu_{2} - \ldots - \frac{1}{J} \mu_{J}  \\
+&= \sum_{j=1}{J} \alpha_{j} \mu_{j}
+\end{align*}
+Where, $\alpha = (\frac{J-1}{J}, \underbrace{- \frac{1}{J}, \ldots, - \frac{1}{J}}_{\text{J-1 times}})$ \\
+So when is the sum parametrisation useful? \\
+\begin{itemize}
+\item compare yourself to a particular average
+\item all J groups are variants of the same treatment or J groups exhaust all possible groups in the population
+\end{itemize}
+
+\subsubsection{Contrast constraint / Contrast parametrisation (default in R)}
+Similar with the sum constraint, under contrast constraint, the one way ANOVA can be represent as
+\begin{equation*}
+Y_{ji} = \mu + a_{j} + \varepsilon_{ji}
+\end{equation*}
+However the difference is:
+\begin{itemize}
+\item $\mu$ is the mean of group 1, where $\mu = \mu_{1}$
+\item each $a_{j}$ represents the difference between group j and goup 1, where $a_{j} = \mu_{j} - \mu_{1}$
+\end{itemize} 
+\textbf{Again, each $a_{j}$ itself is a contrast} \\
+For example:
+\begin{align*}
+a_{2} &= \mu_{2} - \mu_{1} \\
+&= -1 \times \mu_{1} + 1 \times \mu_{2} + 0 \times \mu_{3} + \ldots + 0 \times \mu_{j} \\
+& = \sum^{J}_{j=1} a_{j} u_{j}
+\end{align*}
+Where, $a_{j} = (-1, +1, 0, \ldots, 0)$ \\
+When is the contrast constraint useful? - When we have a control/placebo groups
+\subsubsection{summary}
+\begin{center}
+\begin{tabular}{||c| c  c  c||}
+\hline
+ & Mean parametrisation & Sum parametrisation & Contrast parametrisation\\ [0.5ex]
+\hline \hline
+Representation & \makecell{$Y_{ji} = \mu_{j} + \varepsilon_{ji}$ \\ j = 1, 2, ..., J} & \makecell{$Y_{ji} = \mu + a_{j} + \varepsilon_{ji}$ \\ j = 1, 2, ..., J} & \makecell{$Y_{ji} = \mu + a_{j} + \varepsilon_{ji}
+$ \\ j = 1, 2, ..., J} \\
+\hline
+Constraints & & $\sum_{j=1}^{J} a_{j} = 0$ & $a_{1} == 0$ \\
+\hline
+MLEs & $\hat{\mu_{j}} = \bar{Y}_{j.}$ & \makecell{$\hat{\mu_{j}} = \bar{Y}_{..}$ \\ $\hat{a_{j}} = \bar{Y}_{j.} - \bar{Y}_{..}$} & \makecell{$\hat{\mu_{j}} = \bar{Y}_{1.}$ \\ $\hat{a_{j}} = \bar{Y}_{j.} - \bar{Y}_{1.}$} \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Two way ANOVA}
+Suppose there are two factors at each level. For example, when we testing different drugs, it also has different dosage. In this case, we need to consider two-way interval. \\
+
+In general, two-way ANOVA is defined as:
+\begin{equation*}
+Y_{jki} = \mu + \alpha_{j} + \beta_{k} + \gamma_{jk} + \varepsilon_{jki}
+\end{equation*}
+Where $\alpha_{j}$ is the main effect of fact A, $\beta{j}$ is the main effect of fact B, and $\gamma_{jki}$ is the interaction effect of fact A\&B \\
+How many parameter it has? \\
+It has $1 + J + K + JK$ parameters and the number of groups is JK. \\
+
+\noindent
+Under the sum constraint, we have: $\sum_{j=1}^{J} \alpha_{j} = 0$, $\sum_{k=1}^{K} \beta_{k} = 0$, $\sum_{j=1}^{J} \gamma_{jk} = \sum_{k=1}^{K} \gamma_{k} = 0$\\
+Whereas, under the contrast constraint, we have: $\alpha_{1} = 0$, $\beta_{1} = 0$, and $\gamma_{1k} = \gamma_{j1} =  0$ \\
+
+How do we interpret those parameters under the contrast constraint?
+\begin{itemize}
+\item $\mu$ is the mean response to the first group - level 1 of A and level 1 of B
+\item $\alpha_{j}$ is the expected change in mean when only change the fact A - keep factor B at level 1, then across J for factor A
+\item $\beta_{k}$ is the expected change in mean when changing only the fact B
+\item $\gamma_{jk}$ is the additional change in mean, when change factor A \& B at the same time
+\end{itemize}
+Note: when we have a two-way ANOVA, the first point of interest is to test for possible interactions. If there are interactions, it is not meaningful to talk about main effects. Only if there are no interactions, then we can talk about each main effect in isolation.
+
+\subsection{Linear Model}
+In general, a linear model assures that the data has the structure:
+\begin{equation*}
+Y = \underbrace{X\beta}_{structure} + \underbrace{\varepsilon}_{errors}
+\end{equation*}
+Where, X is $n\times $ design matrix, $\beta$ is $p \times 1$ vector of regression parameters, and $\varepsilon$ is the deviations away from the linear model.
+\begin{equation*}
+    Y = \begin{pmatrix}
+           Y_{1} \\
+           Y_{2} \\
+           \vdots \\
+           Y_{n}
+         \end{pmatrix}
+         \quad\text{and}\quad
+         X = \begin{pmatrix}
+           X_{11}  & X_{12} & X_{13} & \dots & X_{1p}\\
+           X_{21}  & X_{22} & X_{23} & \dots & X_{2p}\\
+           \vdots & \vdots &  \vdots&  &\vdots\\
+           X_{n1}  & X_{n2} & X_{n3} & \dots & X_{np}\\
+         \end{pmatrix}    
+	\quad\text{and}\quad
+    \beta = \begin{pmatrix}
+           \beta_{1} \\
+           \beta_{2} \\
+           \vdots \\
+           \beta_{p}
+         \end{pmatrix}
+         \quad\text{and}\quad
+      \varepsilon = \begin{pmatrix}
+           \varepsilon_{1} \\
+           \varepsilon_{2} \\
+           \vdots \\
+           \varepsilon_{n}
+         \end{pmatrix}
+\end{equation*}
+Example: suppose we have a contrast constraint one-way ANOVA:
+\begin{equation*}
+Y_{ji} = \mu + \alpha_{j} + \varepsilon_{ji}
+\end{equation*}
+Where, $j = 1, 2, \ldots, J$ with $\alpha_{1} = 0$ and $i = 1, 2, \ldots, n_{j}$ \\
+
+Let's construct our model: \\
+\begin{equation*}
+    Y = \begin{pmatrix}
+           Y_{11} \\
+           Y_{12} \\
+           \vdots \\
+           Y_{1n_{1}} \\
+           \\
+           Y_{21} \\
+           Y_{22} \\
+           \vdots \\
+           Y_{2n_{2}} \\
+            \\
+           Y_{31} \\
+           Y_{32} \\
+           \vdots \\
+           Y_{3n_{3}} \\
+           \vdots\\
+            \\
+           Y_{J1} \\
+           Y_{J2} \\
+           \vdots \\
+           Y_{Jn_{j}} \\
+         \end{pmatrix}
+         \quad\text{and}\quad
+      \beta = \begin{pmatrix}
+      		\mu\\
+		\alpha_{2} \\
+		\alpha_{3} \\
+		\vdots \\
+		\alpha_{J} \\
+	\end{pmatrix}
+	\quad\text{and}\quad
+	X = \begin{pmatrix}
+	1 & 0 & 0 \dots 0 \\
+	1 & 0 & 0 \dots 0 \\
+	\vdots \\
+	1 & 0 & 0 \dots 0 \\
+	\\
+	1 & 1 & 0 \dots 0 \\
+	1 & 1 & 0 \dots 0 \\
+	\vdots \\
+	1 & 1 & 0 \dots 0 \\
+	\\
+	1 & 0 & 1 \dots 0 \\
+	1 & 0 & 1 \dots 0 \\
+	\vdots \\
+	1 & 0 & 1 \dots 0 \\
+	\vdots
+	\\ \\
+	1 & 0 & 0 \dots 1 \\
+	1 & 0 & 0 \dots 1 \\
+	\vdots \\
+	1 & 0 & 0 \dots 1 \\
+	\end{pmatrix}
+\end{equation*}
+So we can indeed write one-way ANOVA in the form of $Y = \mu + \alpha + \varepsilon$. \\
+
+In the past, we specified our null hypothesis as: $H_{0}: \alpha_{2} = 0 = \alpha_{3} = \ldots = \alpha_{J}$. However, now with the matrix representation, we could write the $H_{0}$ as:
+\begin{equation*}
+H_{0}: R\beta = 0
+\end{equation*}
+Where,
+\begin{equation*}
+    \beta = \begin{pmatrix}
+    \mu \\
+    \alpha_{2}\\
+    \alpha_{3}\\
+    \vdots\\
+    \alpha_{J}
+    \end{pmatrix}
+    \quad\text{and}\quad
+    R = \begin{pmatrix}
+    0 & 1 & 0 & \dots & 0\\
+    0 & 0 & 1 & \dots & 0 \\
+    \vdots \\
+    0 & 0 & 0 & \dots & 1
+    \end{pmatrix}
+\end{equation*}
+Intuitively, the alternative hypothesis would be:
+\begin{equation*}
+H_{1}: R\beta \neq 0
+\end{equation*}
+
+Shortly, we fit the null model with the restrictions (imposing); whereas we fit the alternative model without the restriction.\\
+
+\noindent
+Linear model is powerful, since there is a universal test for any residuals place on our model parameters, then we compare the residual sum of square left over. Specifically,
+\begin{equation*}
+\frac{(RSS_{null} - RSS_{alternative}) / r}{RSS_{alternative} / df_{alternative}} \sim \mathcal{F}_{r, df_{alternative}}
+\end{equation*}
+Where, r is the number of restrictions, it also equals to the rank or $df_{null} - df_{alternative}$, and sometime we call $(RSS_{null} - RSS_{alternative})$ as $SS_{model}$\\
+
+So where does this universal test come from?\\
+Suppose Y is a $n\times 1$ vector follows a Normal distribution with common variance $\sigma^2$. So,
+\begin{equation*}
+Y \sim N(X\beta, \sigma^2 I)
+\end{equation*}
+Where, $I$ is an identical matrix. $\beta$ is a $p\times 1$ vector of parameters\\
+The likelihood function for $\beta$ with given observed data $X$ is:
+\begin{equation*}
+L(\beta|Y, X) = (\frac{1}{\sqrt{2 \pi \sigma^2 I}})^n exp\{-\frac{1}{2\sigma^2 I} (Y-X\beta)^T(Y-X\beta)\} \quad\text{since, $X^T X = |X|^2$}
+\end{equation*}
+On differentiating the log-likelihood function, we get:
+\begin{equation*}
+\frac{dL}{d\beta} = \frac{1}{\sigma^2 I} X^T(Y-X\beta) = 0 \Rightarrow X^T Y = X^T X\beta
+\end{equation*}
+So the MLE is:
+\begin{equation*}
+\hat{\beta}_{MLE} = \underbrace{(X^T X)^{-1} X^T}_{\text{hat matrix}}Y
+\end{equation*}
+Here, we assume that $X^TX$ is invertible and $X^T$ is full rank.\\
+\color{brown}
+
+Aside: $\hat{\beta}_{MLE}$ is unbiased.
+\begin{align*}
+\hat{\beta}_{MLE} &= E((X^TX)^{-1} X^TY) \\
+&= (X^TX)^{-1}X^TE(Y) \\
+&\text{since, $Y \sim N(X\beta, \sigma^2 I)$} \\
+&=(X^TX)^{-1}X^T X\beta \\
+&= \beta
+\end{align*}
+\color{black}
+Under the null:
+\begin{equation*}
+\underset{H_{0}: R\beta = 0}{sup} L(\beta|Y, X) = (\frac{1}{\sqrt{2 \pi \sigma^2 I}})^n exp \{-\frac{1}{2\sigma^2 I} RSS_{null}\}
+\end{equation*}
+Under the alternative:
+\begin{equation*}
+\underset{\beta}{sup} L(\beta|Y, X) = (\frac{1}{\sqrt{2 \pi \sigma^2 I}})^n exp \{-\frac{1}{2\sigma^2 I} RSS_{alternative}\}
+\end{equation*}
+With using GLRT for testing
+\begin{itemize}
+\item $H_{0}: R\beta = 0$
+\item $H_{1}: R\beta \neq 0$
+\end{itemize}
+\begin{align*}
+\Lambda = \frac{\underset{H_{0}}{sup} L(\beta|Y, X)}{\underset{H_{1}}{sup} L(\beta|Y, X)} &= exp\{-\frac{1}{2\sigma^2 I} (RSS_{null} - RSS_{alternative})\} \\
+&= exp\{-\frac{1}{2\sigma^2 I} RSS_{model}\}
+\end{align*}
+So $\Lambda$ is large if $RSS_{model}$ is small.\\
+
+Following the same calculation in ANOVA, we find that:
+\begin{equation*}
+RSS_{model} \sim \sigma^2 \chi^2_{r}
+\end{equation*}
+Where r is the number of restrictions.\\
+However, if we do not know about $\sigma^2$, the best estimation is the sample pooled variance. Recall the section 3.17:
+\begin{equation*}
+RSS_{alternative} \sim \sigma^2 \chi^2_{df_{alternative}}
+\end{equation*}
+In this case, since the $\beta$ is $p \times 1$ vector of parameters, the $df_{alternative} = n - p$, on top of that, because of the independence between $RSS_{alternative}$ and $SS_{model}$:
+\begin{equation*}
+\frac{SS_{model} / r}{RSS_{alternative} / df_{alternative}} \sim \frac{\chi^2_{df_{r}} / r}{\chi^2_{df_{alternative}} / df_{alternative}} \equiv \mathcal{F}_{r, n-p}
+\end{equation*}
+
+Summary: linear model F-test
+\begin{center}
+\begin{tabular}{||c  c  c  c c||}
+\hline
+Model &df&RSS &  F&Pr(F) \\ [0.5ex]
+\hline
+Model difference &r & $RSS_{null} - RSS_{alternative} $ & $\frac{SS_{model}/r}{RSS_{alternative} / n-p}$ & $P(\mathcal{F}_{r, n-p}) \geq F$ \\
+Alternative & n-p & $RSS_{alternative}$ & & \\
+Null & n-(p-r) & $RSS_{null}$ & & \\
+\hline
+\end{tabular}
+\end{center}
+Where, r is the number of restrictions, p is the number of rows (parameters) in $\beta$, and n is the total sample size. \\
+
+Note that: the null model is actually smaller than the alternative model, since there is more restrictions on null model. You could calculate r by the difference of length of each model.\\
+For example:
+\begin{itemize}
+\item null: $Y = a + bX + \varepsilon$
+\item alternative: $Y = a + bX + cY + dZ +\varepsilon$
+\end{itemize}
+In this case, r is 2.
+\end{document}
